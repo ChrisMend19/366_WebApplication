@@ -1,0 +1,31 @@
+.usernameLogin input{
+    width: 300px;
+    height: 20px;
+}
+
+.passwordLogin input{
+    margin-top: 10px;
+    width: 300px;
+    height: 20px;
+}
+
+#loginButton{
+    margin-top: 10px;
+    width: 100px;
+    height: 20px;
+}
+
+.adminLogin{
+    position: absolute;
+    width: 300px;
+    height: 200px;
+    z-index: 15;
+    top: 50%;
+    left: 50%;
+    margin: -100px 0 0 -150px;
+}
+
+.adminLogin h1{
+    color: rgb(15, 120, 36);
+    
+}
