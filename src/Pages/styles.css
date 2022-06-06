@@ -1,0 +1,36 @@
+
+.box {
+  float: left;
+  width: 50%;
+  padding: 50px;
+  box-sizing: border-box;
+  background-color:#ddd;
+  border : 5px solid red;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+  box-sizing: border-box;
+}
+
+.dropdown-container {
+    border-radius: 0.5rem;
+    transition: height 0.5s;
+    width: 50vw;
+    min-width: 360px;
+    z-index: 200;
+  }
+  
+  .dropdown {
+    align-items: flex-start;
+    display: flex;
+    height: 100%;
+    position: relative;
+    transition: height 0.3s;
+  }
+  
+  
+  
+  

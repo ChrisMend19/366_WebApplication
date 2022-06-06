@@ -2,7 +2,9 @@
     {
     "id" : 1,
     "title" : "Porn Star",
-    "content" : "CSS is BS"
+    "content" : "CSS is BS",
+    "char" : "Work Variety",
+    "value" : 5
     },
 
     {
@@ -51,30 +53,6 @@
         "id" : 9,
         "title" : "Survey 9",
         "content" : "Hijo de una puta "
-    
-    },
-    {
-        "id" : 10,
-        "title" : "Survey 10",
-        "content" : "Work tou fuck "
-    
-    },
-    {
-        "id" : 10,
-        "title" : "Survey 10",
-        "content" : "Work tou fuck "
-    
-    },
-    {
-        "id" : 10,
-        "title" : "Survey 10",
-        "content" : "Work tou fuck "
-    
-    },
-    {
-        "id" : 10,
-        "title" : "Survey 10",
-        "content" : "Work tou fuck "
     
     },
     {

@@ -1,5 +1,6 @@
 import React, {useState, Component, useCallback} from 'react';
 import '../Styles/App.css';
+import './styles.css';
 import '../Styles/DashboardStyles.css'
 import Onet1 from '../Data/OnetJobs.json'
 import {useNavigate} from 'react-router-dom';
@@ -11,29 +12,33 @@ export const LoginInfo = {
   'password' : ''
 }
 
-function Jobs() {
+function Job() {
   const navigate = useNavigate();
+  const clicked = (e) => {
+    toLogin()
+    }
   const toLogin = useCallback(() => navigate('/Dashboard', {replace: true}), [navigate]);
-
+  const toJob = useCallback(() => navigate('/Job', {replace: true}), [navigate]);
+  const saved = localStorage.getItem("jobtitle");
+  const job = localStorage.getItem("job");
+    console.log(job)
     return (
         <div className = "Dash">
           <button type="button" onClick={toLogin}>
-      Back
-    </button>
-            <h1> List of O*Net Jobs</h1>
-            <div class = "tContainer">
-              <table class = "table">
-                {Onet1.map((postDetail,index) => {
-                return <tbody>
-                  <tr>{postDetail.title}</tr>
-                    <th>{postDetail.content}</th>
-                  </tbody>
-                
-              })}
-              </table>
+            Back
+          </button>
+          <h1> {saved} </h1>
+          <div className="clearfix">
+            <div className="box">
+            <p>Onet Job Info</p>
             </div>
+            <div className="box" >
+            <p>Characteristics {job} </p>
+            </div>
+            
+          </div>
         </div>
       );
 }
 
-export default Jobs;
+export default Job;

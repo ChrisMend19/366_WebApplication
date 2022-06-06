@@ -9,3 +9,35 @@
     top: 0;
     width: 100%;
 }
+
+#Logout{
+    position: absolute;
+    right: 10px;
+    width: 70px; 
+    height: 30px;
+
+}
+
+#Back{
+    position: absolute;
+    left: 10px;
+    width: 70px; 
+    height: 30px;
+
+}
+
+.DashboardButtons button{
+    position: relative;
+    width: 300px;
+    height: 75px;
+    font-size: 19px;
+    margin-left: 20px;
+    margin-top: 200px;
+}
+
+.table{
+    text-align:center; 
+    margin-left:auto; 
+    margin-right:auto; 
+    width: 500px;
+}
