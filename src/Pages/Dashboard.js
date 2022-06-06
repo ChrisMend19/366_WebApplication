@@ -2,32 +2,49 @@ import React, {useState, Component, useCallback} from 'react';
 import {useNavigate} from 'react-router-dom';
 import '../Styles/App.css';
 import '../Styles/DashboardStyles.css'
-import LoginInfo from './Login'
+import Login from './Login.js'
 import Survey1 from '../Data/Surveys.json'
 import Jobs from './OnetJobs.js';
 
 function Dashboard() {
-    const navigate = useNavigate();
-    const toOnetJobs = useCallback(() => navigate('/Jobs', {replace: true}), [navigate]);
 
-    function printUser(){
-        console.log(LoginInfo.prototype)
-    }
+  const navigate = useNavigate();
+
+  const toOnetJobs = useCallback(() => navigate('/Jobs', {replace: true}), [navigate]);
+  function toLogin(){
+    localStorage.setItem("LoginUsername", NaN) // idk if it works
+    navigate('/', {replace: true});
+  } 
+  const saved = localStorage.getItem("LoginUsername");
+
+  function printUser(){
+    console.log(surveyData)
+  }
+
+  const surveyData=Survey1.map(
+      (survey)=>{
+          return(
+              <tr>
+                  <td>{survey.title}</td>
+                  <td><button type="button">Show Surveys</button></td>
+                  <td><button type="button">Edit Survey Status</button></td>
+              </tr>
+          )
+      }
+  )
 
   return (
     <div className = "AdminDashboard">
-        {/* <button onClick={printUser} >Print</button>  */}
-        <h1>UserName</h1>
-    <h1> List of Surveys</h1>
+    <button id="Logout" type="button" onClick={toLogin}>Log Out</button>
+    <h1>UserName: {saved}</h1>
+    {/* <table class="tableHeader">
+        <th>Survey Name</th>
+    </table> */}
     <div class="tContainer">
       <table class="table">
-        {Survey1.map((postDetail,index) => {
-        return <tbody>
-          <tr>{postDetail.title}</tr>
-            {/* <th>{postDetail.content}</th> */}
-          </tbody>
-        
-      })}
+      <tbody>
+        {surveyData}
+      </tbody>
       </table>
     </div>
 
@@ -35,12 +52,20 @@ function Dashboard() {
     <button type="button" onClick={toOnetJobs}>
       Browse ONet Jobs
     </button>
+    <button type="button" onClick={toOnetJobs}>
+      Create Survey
+    </button>
+    <button type="button" onClick={toOnetJobs}>
+      Create Profile Characteristic
+    </button>
+    <button type="button" onClick={toOnetJobs}>
+      Analytics
+    </button>
 
     </div>
 </div>
   );
 }
-
 
 
 export default Dashboard;

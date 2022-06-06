@@ -2,6 +2,8 @@ import React, {useState, useCallback} from 'react';
 import {useNavigate} from 'react-router-dom';
 import '../Styles/App.css';
 import '../Styles/LoginStyles.css'
+import { LoginInfo } from './OnetJobs';
+// import { LoginInfo } from './OnetJobs';
 
 const AccountDB = [
   {
@@ -19,25 +21,26 @@ export const TypedLoginInfo = {
   'password' : ''
 }
 
-function Login() {
+export function Login() {
 
   const navigate = useNavigate();
   const toDashboard = useCallback(() => navigate('/Dashboard', {replace: true}), [navigate]);
 
   const [LoginInfo, setstate] = useState({username: "", password: ""})
   
-    const changeUsername = (event) => {  
-        setstate({username: event.target.value, password: LoginInfo.password}); 
-       };
-    
-      const changePassword = (event) => {  
-      setstate({username: LoginInfo.username, password: event.target.value}); 
+  const changeUsername = (event) => {  
+    setstate({username: event.target.value, password: LoginInfo.password}); 
       };
+
+  const changePassword = (event) => {  
+    setstate({username: LoginInfo.username, password: event.target.value}); 
+  };
 
   function validateLogin(){
     for (let i = 0; i < AccountDB.length; i++){
       if (AccountDB[i].username === LoginInfo.username && AccountDB[i].password === LoginInfo.password){
-        console.log(AccountDB[i])
+        // console.log(AccountDB[i])
+        localStorage.setItem("LoginUsername", AccountDB[i].username)
         toDashboard()
       }
     }
@@ -58,6 +61,7 @@ function Login() {
             <h2>{Password}</h2> */}
           </div>
           <button id="loginButton" onClick={validateLogin} >Login</button> 
+          
 
     </div>
   );
