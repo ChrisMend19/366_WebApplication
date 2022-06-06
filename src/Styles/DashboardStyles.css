@@ -1,0 +1,11 @@
+.tContainer {
+    height: 150px;
+    overflow: scroll;
+
+}
+
+.table {
+    position: sticky;
+    top: 0;
+    width: 100%;
+}
