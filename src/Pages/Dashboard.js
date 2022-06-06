@@ -9,24 +9,31 @@ import Jobs from './OnetJobs.js';
 function Dashboard() {
 
   const navigate = useNavigate();
-
   const toOnetJobs = useCallback(() => navigate('/Jobs', {replace: true}), [navigate]);
+  const toCurrentSurvey = useCallback(() => navigate('/CurrentSurvey', {replace: true}), [navigate]);
   function toLogin(){
     localStorage.setItem("LoginUsername", NaN) // idk if it works
     navigate('/', {replace: true});
   } 
   const saved = localStorage.getItem("LoginUsername");
+  localStorage.setItem("CurrentSurvey", NaN)
+  // localStorage.setItem("CurrentSurvey", "")
 
-  function printUser(){
-    console.log(surveyData)
+  function setCurrentSurvey(e){
+    localStorage.setItem("CurrentSurvey", e.target.value)
+    toCurrentSurvey()
   }
+
+  // function printCS(){
+  //   console.log(localStorage.getItem("CurrentSurvey"))
+  // }
 
   const surveyData=Survey1.map(
       (survey)=>{
           return(
               <tr>
                   <td>{survey.title}</td>
-                  <td><button type="button">Show Surveys</button></td>
+                  <td><button value={survey.title} onClick={setCurrentSurvey} type="button">Show Surveys</button></td>
                   <td><button type="button">Edit Survey Status</button></td>
               </tr>
           )
@@ -40,15 +47,15 @@ function Dashboard() {
     {/* <table class="tableHeader">
         <th>Survey Name</th>
     </table> */}
-    <div class="tContainer">
-      <table class="table">
+    <div className="tContainer">
+      <table className="table">
       <tbody>
         {surveyData}
       </tbody>
       </table>
     </div>
 
-    <div class="DashboardButtons">
+    <div className="DashboardButtons">
     <button type="button" onClick={toOnetJobs}>
       Browse ONet Jobs
     </button>

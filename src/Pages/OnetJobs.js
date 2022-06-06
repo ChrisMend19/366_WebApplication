@@ -28,7 +28,7 @@ function Jobs() {
             </tr>
         )
     }
-)
+  )
 
 return (
     <div className = "Dash">
