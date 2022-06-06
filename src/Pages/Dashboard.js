@@ -10,9 +10,11 @@ function Dashboard() {
 
   const navigate = useNavigate();
   const toOnetJobs = useCallback(() => navigate('/Jobs', {replace: true}), [navigate]);
+  const toSurveyAnalytics = useCallback(() => navigate('/SurveyAnalytics', {replace: true}), [navigate]);
+  const toCreateSurvey = useCallback(() => navigate('/CreateSurvey', {replace: true}), [navigate]);
   const toCurrentSurvey = useCallback(() => navigate('/CurrentSurvey', {replace: true}), [navigate]);
   function toLogin(){
-    localStorage.setItem("LoginUsername", NaN) // idk if it works
+    localStorage.setItem("LoginUsername", NaN)
     navigate('/', {replace: true});
   } 
   const saved = localStorage.getItem("LoginUsername");
@@ -59,14 +61,14 @@ function Dashboard() {
     <button type="button" onClick={toOnetJobs}>
       Browse ONet Jobs
     </button>
-    <button type="button" onClick={toOnetJobs}>
+    <button type="button" onClick={toCreateSurvey}>
       Create Survey
     </button>
     <button type="button" onClick={toOnetJobs}>
       Create Profile Characteristic
     </button>
-    <button type="button" onClick={toOnetJobs}>
-      Analytics
+    <button type="button" onClick={toSurveyAnalytics}>
+      Survey Analytics
     </button>
 
     </div>

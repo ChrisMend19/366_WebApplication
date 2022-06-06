@@ -1,71 +1,63 @@
-import React, { useState } from "react";
+import React, {useState, Component, useCallback} from 'react';
+import {useNavigate} from 'react-router-dom';
+import Survey1Qs from '../Data/Survey1Questions.json'
+import '../Styles/CreateSurvey.css'
 
 function CreateSurvey() {
-    const [myArray, setList] = useState([]);
-    const [q, setQ] = useState("");
-    const [name, setName] = useState("");
-    const [h1_Text, setHeading] = useState("");
-    const [isMousedOver, setMouseOver] = useState(false);
 
-  function handle_change1(event) {
-    setName(event.target.value);
-    console.log(event.target.value);
-    // console.log(event);
-    // console.log(event.target.type);
-    // console.log(event.target.placeholder);
-  }
-  function handle_change(event) {
-    setQ(event.target.value);
-    console.log(event.target.value);
-    // console.log(event);
-    // console.log(event.target.type);
-    // console.log(event.target.placeholder);
-  }
+    localStorage.setItem("CreateSurveyName", NaN)
+    const [SurveyName, setSurveyName] = useState("")
 
-  function handleMouseOver() {
-    setMouseOver(!isMousedOver);
-  }
+    const navigate = useNavigate();
+    function toLogin(){
+      localStorage.setItem("LoginUsername", NaN) 
+      navigate('/', {replace: true});
+    } 
 
-  
-  function handle_click(event) {
-    setList(oldArray => [...oldArray, q]);
-    event.preventDefault();
-  }
-  function handle_click1(event) {
-    setName(name);
-    event.preventDefault();
-  }
+    function toDashboard(){
+      localStorage.setItem("CurrentSurvey", NaN) 
+      navigate('/Dashboard', {replace: true});
+    }
+
+    function changeSurveyName(event){
+      localStorage.setItem("CreateSurveyName", event.target.value)
+      setSurveyName(event.target.value)
+    }
+
+    const survey1QuestionData=Survey1Qs.map(
+      (survey1Qs)=>{
+          return(
+              <tr>
+                  <td>{survey1Qs.QuestionID}</td>
+                  <td>{survey1Qs.question}</td>
+              </tr>
+          )
+      }
+  ) 
+
 
   return (
-    <div className="container">
-      <h1>Survey Name: {name} </h1>
-        <form onSubmit={handle_click1}>
-            <input
-            onChange={handle_change1}
-            type="text"
-            placeholder="Survey Name"
-            value={name}
-            />
-           
-        </form>
-      <h1> Questions: {myArray} </h1>
-        <form onSubmit={handle_click}>
-            <input
-            onChange={handle_change}
-            type="text"
-            placeholder="Question"
-            value={q}
-            />
-            <button
-            style={{ backgroundColor: isMousedOver ? "Yellow" : "white" }}
-            type="submit"
-            onMouseOver={handleMouseOver}
-            onMouseOut={handleMouseOver}
-            >
-            Add Question
-            </button>
-        </form>
+    <div>
+      <div className="SurveyNameContainer"> 
+        <button id="Logout" type="button" onClick={toLogin}>Log Out</button>
+        <button id="Back" type="button" onClick={toDashboard}>Back</button>
+        <h1>Survey Name: {SurveyName}</h1>
+        <input onChange={changeSurveyName} type="text" placeholder='Survey Name'/>
+      </div>
+      <div className="SurveyQuestionContainer">
+        <button>Add New Question</button>
+      </div>
+      <div className="SurveyQuestionTableContainer">
+        <table class="table">
+        <tbody>
+            {survey1QuestionData}
+        </tbody>
+        </table>
+      </div>
+
     </div>
+
+    
   );
 }
 
