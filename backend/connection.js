@@ -31,7 +31,7 @@ con.query(`select * from Survey;`, (err, res) =>{
     if(err) throw err;
         console.log(res);
 });
-/*
+
 async function getSurvey(){
     const survey = con.query(`select * from Survey;`);
     return survey;
@@ -76,4 +76,4 @@ module.export{
     getAllSurveyRes,
     getResponses,
     getIndividualRes
-};*/
+};
