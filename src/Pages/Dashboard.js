@@ -2,7 +2,6 @@ import React, {useState, Component, useCallback, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import '../Styles/App.css';
 import '../Styles/DashboardStyles.css'
-import Login from './Login.js'
 import Survey1 from '../Data/Surveys.json'
 import Jobs from './OnetJobs.js';
 import Axios from 'axios';
@@ -64,7 +63,7 @@ function Dashboard() {
     }});
   }, []);
   // function printCS(){
-  //   console.log(localStorage.getItem("CurrentSurvey"))
+  //   console.log(data)
   // }
   function ShowSurveys(props){
     props.surveys.map((row) => {
@@ -81,9 +80,9 @@ function Dashboard() {
       (survey)=>{
           return(
               <tr>
-                  <td><button value={survey.title} onClick={setCurrentSurvey} type="button">{survey.title}</button></td>
-                  <td><button value={survey.title} onClick={setCurrentSurvey2} type="button">Show Surveys</button></td>
-                  <td><button type="button">Edit Survey Status</button></td>
+                  <td><button className="DashboardSurveyButton" value={survey.title} onClick={setCurrentSurvey} type="button">{survey.title}</button></td>
+                  <td><button className="DashboardSurveyButton"  value={survey.title} onClick={setCurrentSurvey2} type="button">Show Surveys</button></td>
+                  <td><button className="DashboardSurveyButton"  type="button">Edit Survey Status</button></td>
               </tr>
           )
       }
@@ -111,19 +110,18 @@ function Dashboard() {
       
         </tbody>
       </table>
-    </div>
-
+      </div>
     <div className="DashboardButtons">
-    <button type="button" onClick={toOnetJobs}>
+    <button className="DashboardButton" type="button" onClick={toOnetJobs}>
       Browse ONet Jobs
     </button>
-    <button type="button" onClick={toCreateSurvey}>
+    <button className="DashboardButton" type="button" onClick={toCreateSurvey}>
       Create Survey
     </button>
-    <button type="button" onClick={toCreateProfileChar}>
+    <button className="DashboardButton" type="button" onClick={toCreateProfileChar}>
       Create Profile Characteristic
     </button>
-    <button type="button" onClick={toSurveyAnalytics}>
+    <button className="DashboardButton" type="button" onClick={toSurveyAnalytics}>
       Survey Analytics
     </button>
 

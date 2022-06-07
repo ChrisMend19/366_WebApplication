@@ -2,6 +2,7 @@ import React, {useState, Component, useCallback} from 'react';
 import {useNavigate} from 'react-router-dom';
 import Survey1Qs from '../Data/Survey1Questions.json'
 import '../Styles/CreateSurvey.css'
+import '../Styles/DashboardStyles.css'
 
 function CreateSurvey() {
 
@@ -41,7 +42,7 @@ function CreateSurvey() {
       <div className="SurveyNameContainer"> 
         <button id="Logout" type="button" onClick={toLogin}>Log Out</button>
         <button id="Back" type="button" onClick={toDashboard}>Back</button>
-        <h1>Survey Name: {SurveyName}</h1>
+        <h1>Create New Survey</h1>
         <input onChange={changeSurveyName} type="text" placeholder='Survey Name'/>
       </div>
       <div className="SurveyQuestionContainer">

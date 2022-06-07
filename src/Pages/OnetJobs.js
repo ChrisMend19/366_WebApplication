@@ -31,14 +31,12 @@ function OnetJobs() {
   const surveyData=Onet1.map(
     (survey)=>{
         return(
-          <tbody key= {survey.title}>
-            <tr >
-                <td >  <button onClick={clicked} id = {survey.title} char = {survey.char}>
-                      {survey.title}
-                      </button></td>
-                <td> {survey.content}</td>
-            </tr>
-            </tbody>
+            <tbody className="OnetJobs" key= {survey.title}>
+              <tr>
+                  <td id="OnetJobButton"><button onClick={clicked} id = {survey.title} char = {survey.char}>{survey.title}</button></td>
+                  <td id="OnetJobDesc"> {survey.content}</td>
+              </tr>
+              </tbody>
         )
     }
 )
@@ -48,16 +46,8 @@ return (
       <button id="Logout" type="button" onClick={toLogin}>Log Out</button>
       <button id="Back" type="button" onClick={toDashboard}>Back</button>
       <h1> List of O*Net Jobs</h1>
-      <table className ="table">
-        <thead>
-          <tr>
-            <th>Job Name</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-      </table>
-      <div className = "tContainer">
-        <table className ="table">
+      <div className = "OnetJobsTable">
+        <table className ="table2">
         
           {surveyData}
 

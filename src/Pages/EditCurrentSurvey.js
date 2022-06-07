@@ -2,7 +2,6 @@ import React, {useState, Component, useCallback} from 'react';
 import {useNavigate} from 'react-router-dom';
 import '../Styles/App.css';
 import '../Styles/DashboardStyles.css'
-import Login from './Login.js'
 import Survey1Qs from '../Data/Survey1Questions.json'
 
 function EditCurrentSurvey() {
