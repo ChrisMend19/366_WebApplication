@@ -5,11 +5,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './Pages/Login';
 import Dashboard from './Pages/Dashboard';
 import OnetJobs from './Pages/OnetJobs';
-import Job from './Pages/Job';
+import OnetJob from './Pages/Job';
 import CreateSurvey from './Pages/CreateSurvey';
 import CurrentSurvey from './Pages/CurrentSurvey';
 import EditCurrentSurvey from './Pages/EditCurrentSurvey';
 import SurveyAnalytics from './Pages/SurveyAnalytics';
+import CreateProfileChar from './Pages/CreateProfileChar';
 // CSS
 import './Styles/App.css'
 
@@ -21,12 +22,13 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/Jobs" element={<OnetJobs />} />
-          <Route path="/Job" element={<Job />} />
+          <Route path="/OnetJobs" element={<OnetJobs />} />
+          <Route path="/OnetJob" element={<OnetJob />} />
           <Route path="/CreateSurvey" element={<CreateSurvey />} />
           <Route path="/CurrentSurvey" element={<CurrentSurvey />} />
           <Route path="/EditCurrentSurvey" element={<EditCurrentSurvey />} />
           <Route path="/SurveyAnalytics" element={<SurveyAnalytics />} />
+          <Route path="/CreateProfileChar" element={<CreateProfileChar />} />
         </Routes>
       </Router>
     </div>

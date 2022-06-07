@@ -14,7 +14,7 @@ export const LoginInfo = {
 function OnetJobs() {
   const navigate = useNavigate();
   const toDashboard = useCallback(() => navigate('/Dashboard', {replace: true}), [navigate]);
-  const toJob = useCallback(() => navigate('/Job', {replace: true}), [navigate]);
+  const toJob = useCallback(() => navigate('/OnetJob', {replace: true}), [navigate]);
 
   function toLogin(){
     localStorage.setItem("LoginUsername", NaN) // idk if it works

@@ -9,10 +9,11 @@ import Jobs from './OnetJobs.js';
 function Dashboard() {
 
   const navigate = useNavigate();
-  const toOnetJobs = useCallback(() => navigate('/Jobs', {replace: true}), [navigate]);
+  const toOnetJobs = useCallback(() => navigate('/OnetJobs', {replace: true}), [navigate]);
   const toSurveyAnalytics = useCallback(() => navigate('/SurveyAnalytics', {replace: true}), [navigate]);
   const toCreateSurvey = useCallback(() => navigate('/CreateSurvey', {replace: true}), [navigate]);
   const toCurrentSurvey = useCallback(() => navigate('/CurrentSurvey', {replace: true}), [navigate]);
+  const toCreateProfileChar = useCallback(() => navigate('/CreateProfileChar', {replace: true}), [navigate]);
   function toLogin(){
     localStorage.setItem("LoginUsername", NaN)
     navigate('/', {replace: true});
@@ -64,7 +65,7 @@ function Dashboard() {
     <button type="button" onClick={toCreateSurvey}>
       Create Survey
     </button>
-    <button type="button" onClick={toOnetJobs}>
+    <button type="button" onClick={toCreateProfileChar}>
       Create Profile Characteristic
     </button>
     <button type="button" onClick={toSurveyAnalytics}>

@@ -1,6 +1,6 @@
 import React, {useState, Component, useCallback} from 'react';
 import '../Styles/App.css';
-import './styles.css';
+import '../Styles/JobStyles.css';
 import '../Styles/DashboardStyles.css'
 import Onet1 from '../Data/OnetJobs.json'
 import {useNavigate} from 'react-router-dom';
@@ -14,7 +14,7 @@ export const LoginInfo = {
 }
 var charVal = 5;
 
-function Job() {
+function OnetJob() {
   const charData=JobChars.map(
     (char)=>{
         return( 
@@ -40,16 +40,14 @@ function Job() {
       if (q > 0)
         setQ(q - 1);
     }
-  const toLogin = useCallback(() => navigate('/Dashboard', {replace: true}), [navigate]);
-  const toJob = useCallback(() => navigate('/Job', {replace: true}), [navigate]);
+  const toLogin = useCallback(() => navigate('/', {replace: true}), [navigate]);
+  const toOnetJob = useCallback(() => navigate('/OnetJobs', {replace: true}), [navigate]);
   const saved = localStorage.getItem("jobtitle");
   const job = localStorage.getItem("job");
-    console.log(job)
     return (
-        <div className = "Dash">
-          <button type="button" onClick={toLogin}>
-            Back
-          </button>
+        <div className = "JobContainer">
+          <button id="Logout" type="button" onClick={toLogin}>Log Out</button>
+          <button id="Back" type="button" onClick={toOnetJob}>Back</button>
           <h1> Onet Job Info:  {saved} </h1>
           <div className="clearfix">
             <div className="box">
@@ -71,4 +69,4 @@ function Job() {
       );
 }
 
-export default Job;
+export default OnetJob;
