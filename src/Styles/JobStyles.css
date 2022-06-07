@@ -5,8 +5,8 @@
   height: 100vh;
   padding: 5px;
   box-sizing: border-box;
-  
-  
+  background-color:#ddd;
+  border : 5px solid rgb(94, 91, 136);
 }
 
 .clearfix::after {
