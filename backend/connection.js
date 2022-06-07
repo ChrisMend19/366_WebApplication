@@ -69,7 +69,7 @@ async function getIndividualRes(resId){
     return indResponse
 }
 
-module.export{
+module.exports = {
     getSurvey,
     countResponses,
     getQuestions,
