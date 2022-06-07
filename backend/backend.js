@@ -2,7 +2,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const port = 3000;
+const port = 4000;
 const{ json } = require("express");
 const mysql = require('mysql');
   
@@ -28,9 +28,11 @@ app.get("/:ShowSurveys", async (req, res) => {
     const SurveyId = req.params["SurveyId"];
     con.query(`select * from SurveyResponse where SurveyId = ${SurveyId};`, (err, result) =>{
         if(err) throw err;
-          res.send(result);
+          res.status(201).send(result);
     })
 });
+
+
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });

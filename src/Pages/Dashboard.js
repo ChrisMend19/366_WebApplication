@@ -16,7 +16,7 @@ function Dashboard() {
   const toCurrentSurvey = useCallback(() => navigate('/CurrentSurvey', {replace: true}), [navigate]);
   const toCreateProfileChar = useCallback(() => navigate('/CreateProfileChar', {replace: true}), [navigate]);
   const toShowSurveys = useCallback(() => navigate('/ShowSurveys', {replace: true}), [navigate]);
-  //const [surveys, setSurveys] = useState([]);
+
   function toLogin(){
     localStorage.setItem("LoginUsername", NaN)
     navigate('/', {replace: true});
@@ -39,35 +39,44 @@ function Dashboard() {
     localStorage.setItem("CurrentSurvey", e.target.value)
     toShowSurveys()
   }
-  const [postList,setPostList]=useState();
-  Axios.get("http://localhost:3000/:Dashboard").then(response => {
+  const [postList,setPostList] = useState([]);
+  /*
+  Axios.get("http://localhost:4000/:Dashboard").then(response => {
       console.log("response");
-      console.log(response.data);
+      //console.log(response.data);
       setPostList(response.data)
       }).catch(e => {
         console.log(e)
-  });
-  /*
+  });*/
   async function getSurvey(){
-    try{
-      const result = await axios.get(`http://localhost:5000/:Dashboard`);
-      return result;
+    try {
+      const surveys = Axios.get("http://localhost:4000/:Dashboard");
+      return (await surveys).data;
     } catch (err){
       console.log(err);
     }
   }
-  useEffect(async () => {
-    getSurvey().then((result)=> {
-      if (result) {
-        setSurveys(result);ç
-      }
-    })
-  }, []);*/
+  useEffect(() => {getSurvey().then( result => {
+    if (result){
+      setPostList(result);
+      //console.log(result);
+      //console.log(result.map((s)=> `index=${s.SurveyID} name=${s.name}`));
+    }});
+  }, []);
   // function printCS(){
   //   console.log(localStorage.getItem("CurrentSurvey"))
   // }
-
-
+  function ShowSurveys(props){
+    props.surveys.map((row) => {
+      return(
+        <tr key={row.SurveyID}>
+          <td>{row.name}</td>
+        </tr>
+      )
+    })
+  }
+  function ChangeStatus(){}
+  function goToSurvey(){}
   const surveyData=Survey1.map(
       (survey)=>{
           return(
@@ -83,15 +92,24 @@ function Dashboard() {
   return (
     <div className = "AdminDashboard">
     <button id="Logout" type="button" onClick={toLogin}>Log Out</button>
-    <h1>UserName: {saved}</h1>
-    {/* <table class="tableHeader">
-        <th>Survey Name</th>
-    </table> */}
+    {/* <button type="button" onClick={printCS}>print</button> */}
+    <h1>{saved}</h1>
+    <div>
+      <ShowSurveys surveys={postList}/>
+    </div>
     <div className="tContainer">
-      <table className="table">
-      <tbody>
-        {surveyData}
-      </tbody>
+    <table className="table">
+    <thead>
+      <tr>
+        <th>Survey Name</th>
+        <th>Show Surveys</th>
+        <th>Status</th>
+        </tr>
+    </thead> 
+        <tbody>
+          {surveyData}
+      
+        </tbody>
       </table>
     </div>
 
