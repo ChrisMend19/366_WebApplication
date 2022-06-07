@@ -66,7 +66,7 @@ async function getResponse(resId){
 //get responses to questions for one survey response
 async function getIndividualRes(resId){
     const indResponse = con.query(`select * from Responses where SurvResp = ${resId};`);
-    return indResponse
+    return indResponse;
 }
 
 module.exports = {
@@ -74,6 +74,6 @@ module.exports = {
     countResponses,
     getQuestions,
     getAllSurveyRes,
-    getResponses,
+    getResponse,
     getIndividualRes
 };
