@@ -1,10 +1,11 @@
-import React, {useState, Component, useCallback} from 'react';
+import React, {useState, Component, useCallback, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import '../Styles/App.css';
 import '../Styles/DashboardStyles.css'
 import Login from './Login.js'
 import Survey1 from '../Data/Surveys.json'
 import Jobs from './OnetJobs.js';
+import Axios from 'axios';
 
 function Dashboard() {
 
@@ -15,7 +16,7 @@ function Dashboard() {
   const toCurrentSurvey = useCallback(() => navigate('/CurrentSurvey', {replace: true}), [navigate]);
   const toCreateProfileChar = useCallback(() => navigate('/CreateProfileChar', {replace: true}), [navigate]);
   const toShowSurveys = useCallback(() => navigate('/ShowSurveys', {replace: true}), [navigate]);
-
+  //const [surveys, setSurveys] = useState([]);
   function toLogin(){
     localStorage.setItem("LoginUsername", NaN)
     navigate('/', {replace: true});
@@ -38,10 +39,34 @@ function Dashboard() {
     localStorage.setItem("CurrentSurvey", e.target.value)
     toShowSurveys()
   }
-
+  const [postList,setPostList]=useState();
+  Axios.get("http://localhost:3000/:Dashboard").then(response => {
+      console.log("response");
+      console.log(response.data);
+      setPostList(response.data)
+      }).catch(e => {
+        console.log(e)
+  });
+  /*
+  async function getSurvey(){
+    try{
+      const result = await axios.get(`http://localhost:5000/:Dashboard`);
+      return result;
+    } catch (err){
+      console.log(err);
+    }
+  }
+  useEffect(async () => {
+    getSurvey().then((result)=> {
+      if (result) {
+        setSurveys(result);ç
+      }
+    })
+  }, []);*/
   // function printCS(){
   //   console.log(localStorage.getItem("CurrentSurvey"))
   // }
+
 
   const surveyData=Survey1.map(
       (survey)=>{

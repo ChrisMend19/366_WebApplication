@@ -31,10 +31,12 @@ con.query(`select * from Survey;`, (err, res) =>{
     if(err) throw err;
         console.log(res);
 });
-/*
+
 async function getSurvey(){
-    const survey = con.query(`select * from Survey;`);
-    return survey;
+    con.query(`select * from Survey;`, (err, res) =>{
+        if(err) throw err;
+             return res;
+    });
 }
 async function getQuestions(surveyId){
     const questions = con.query(`select * from Questions where Survey = ${surveyId}`);
@@ -45,7 +47,8 @@ async function getPossibleAnswer(questionId, surveyId){
         and QuestionId = ${questionId}`);
     if (qtype = 0){
         return con.query(`select * from Possibilities where qtype = 1 and QuestionNo = ${questionId}
-        and survey = ${surveyId};`);}
+        and survey = ${surveyId};`);
+    }
     else {
         return con.query(`select * from Possiblities where qtype = 0;`);
     }
@@ -69,11 +72,12 @@ async function getIndividualRes(resId){
     return indResponse
 }
 
-module.export{
+module.exports = {
+    con,
     getSurvey,
     countResponses,
     getQuestions,
     getAllSurveyRes,
-    getResponses,
+    getResponse,
     getIndividualRes
-};*/
+};
