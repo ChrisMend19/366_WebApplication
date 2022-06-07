@@ -27,6 +27,11 @@ function Dashboard() {
     toCurrentSurvey()
   }
 
+  function setCurrentSurvey(e){
+    localStorage.setItem("CurrentSurvey", e.target.value)
+    toCurrentSurvey()
+  }
+
   // function printCS(){
   //   console.log(localStorage.getItem("CurrentSurvey"))
   // }
@@ -35,7 +40,7 @@ function Dashboard() {
       (survey)=>{
           return(
               <tr>
-                  <td>{survey.title}</td>
+                  <td><button value={survey.title} onClick={setCurrentSurvey} type="button">{survey.title}</button></td>
                   <td><button value={survey.title} onClick={setCurrentSurvey} type="button">Show Surveys</button></td>
                   <td><button type="button">Edit Survey Status</button></td>
               </tr>

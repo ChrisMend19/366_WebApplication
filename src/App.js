@@ -11,6 +11,7 @@ import CurrentSurvey from './Pages/CurrentSurvey';
 import EditCurrentSurvey from './Pages/EditCurrentSurvey';
 import SurveyAnalytics from './Pages/SurveyAnalytics';
 import CreateProfileChar from './Pages/CreateProfileChar';
+import ShowSurveys from './Pages/ShowSurveys';
 // CSS
 import './Styles/App.css'
 
@@ -26,9 +27,10 @@ function App() {
           <Route path="/OnetJob" element={<OnetJob />} />
           <Route path="/CreateSurvey" element={<CreateSurvey />} />
           <Route path="/CurrentSurvey" element={<CurrentSurvey />} />
+          <Route path="/CreateProfileChar" element={<CreateProfileChar />} />
           <Route path="/EditCurrentSurvey" element={<EditCurrentSurvey />} />
           <Route path="/SurveyAnalytics" element={<SurveyAnalytics />} />
-          <Route path="/CreateProfileChar" element={<CreateProfileChar />} />
+          <Route path="/ShowSurvey" element={<ShowSurveys />} />
         </Routes>
       </Router>
     </div>
