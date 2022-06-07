@@ -9,24 +9,46 @@ import Jobs from './OnetJobs.js';
 function Dashboard() {
 
   const navigate = useNavigate();
+  const toOnetJobs = useCallback(() => navigate('/OnetJobs', {replace: true}), [navigate]);
+  const toSurveyAnalytics = useCallback(() => navigate('/SurveyAnalytics', {replace: true}), [navigate]);
+  const toCreateSurvey = useCallback(() => navigate('/CreateSurvey', {replace: true}), [navigate]);
+  const toCurrentSurvey = useCallback(() => navigate('/CurrentSurvey', {replace: true}), [navigate]);
+  const toCreateProfileChar = useCallback(() => navigate('/CreateProfileChar', {replace: true}), [navigate]);
+  const toShowSurveys = useCallback(() => navigate('/ShowSurveys', {replace: true}), [navigate]);
 
-  const toOnetJobs = useCallback(() => navigate('/Jobs', {replace: true}), [navigate]);
   function toLogin(){
-    localStorage.setItem("LoginUsername", NaN) // idk if it works
+    localStorage.setItem("LoginUsername", NaN)
     navigate('/', {replace: true});
   } 
   const saved = localStorage.getItem("LoginUsername");
+  localStorage.setItem("CurrentSurvey", NaN)
+  // localStorage.setItem("CurrentSurvey", "")
 
-  function printUser(){
-    console.log(surveyData)
+  function setCurrentSurvey(e){
+    localStorage.setItem("CurrentSurvey", e.target.value)
+    toCurrentSurvey()
   }
+
+  function setCurrentSurvey(e){
+    localStorage.setItem("CurrentSurvey", e.target.value)
+    toCurrentSurvey()
+  }
+
+  function setCurrentSurvey2(e){
+    localStorage.setItem("CurrentSurvey", e.target.value)
+    toShowSurveys()
+  }
+
+  // function printCS(){
+  //   console.log(localStorage.getItem("CurrentSurvey"))
+  // }
 
   const surveyData=Survey1.map(
       (survey)=>{
           return(
               <tr>
-                  <td>{survey.title}</td>
-                  <td><button type="button">Show Surveys</button></td>
+                  <td><button value={survey.title} onClick={setCurrentSurvey} type="button">{survey.title}</button></td>
+                  <td><button value={survey.title} onClick={setCurrentSurvey2} type="button">Show Surveys</button></td>
                   <td><button type="button">Edit Survey Status</button></td>
               </tr>
           )
@@ -40,26 +62,26 @@ function Dashboard() {
     {/* <table class="tableHeader">
         <th>Survey Name</th>
     </table> */}
-    <div class="tContainer">
-      <table class="table">
+    <div className="tContainer">
+      <table className="table">
       <tbody>
         {surveyData}
       </tbody>
       </table>
     </div>
 
-    <div class="DashboardButtons">
+    <div className="DashboardButtons">
     <button type="button" onClick={toOnetJobs}>
       Browse ONet Jobs
     </button>
-    <button type="button" onClick={toOnetJobs}>
+    <button type="button" onClick={toCreateSurvey}>
       Create Survey
     </button>
-    <button type="button" onClick={toOnetJobs}>
+    <button type="button" onClick={toCreateProfileChar}>
       Create Profile Characteristic
     </button>
-    <button type="button" onClick={toOnetJobs}>
-      Analytics
+    <button type="button" onClick={toSurveyAnalytics}>
+      Survey Analytics
     </button>
 
     </div>

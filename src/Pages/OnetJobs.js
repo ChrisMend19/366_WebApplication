@@ -11,21 +11,34 @@ export const LoginInfo = {
   'password' : ''
 }
 
-function Jobs() {
+function OnetJobs() {
   const navigate = useNavigate();
   const toDashboard = useCallback(() => navigate('/Dashboard', {replace: true}), [navigate]);
+  const toJob = useCallback(() => navigate('/OnetJob', {replace: true}), [navigate]);
+
   function toLogin(){
     localStorage.setItem("LoginUsername", NaN) // idk if it works
     navigate('/', {replace: true});
   } 
+  const clicked = (e) => {
+    localStorage.setItem("job", e.target.char)
+    localStorage.setItem("jobtitle", e.target.id)
+    console.log(localStorage.getItem("job"))
+    toJob()
+
+    }
 
   const surveyData=Onet1.map(
     (survey)=>{
         return(
-            <tr>
-                <td>{survey.title}</td>
-                <td>{survey.content}</td>
+          <tbody key= {survey.title}>
+            <tr >
+                <td >  <button onClick={clicked} id = {survey.title} char = {survey.char}>
+                      {survey.title}
+                      </button></td>
+                <td> {survey.content}</td>
             </tr>
+            </tbody>
         )
     }
 )
@@ -35,19 +48,23 @@ return (
       <button id="Logout" type="button" onClick={toLogin}>Log Out</button>
       <button id="Back" type="button" onClick={toDashboard}>Back</button>
       <h1> List of O*Net Jobs</h1>
-      <table class="table">
-        <th>Job Name</th>
-        <th>Description</th>
+      <table className ="table">
+        <thead>
+          <tr>
+            <th>Job Name</th>
+            <th>Description</th>
+          </tr>
+        </thead>
       </table>
-      <div class = "tContainer">
-        <table class="table">
-        <tbody>
+      <div className = "tContainer">
+        <table className ="table">
+        
           {surveyData}
-        </tbody>
+
         </table>
       </div>
     </div>
   );
 }
 
-export default Jobs;
+export default OnetJobs;

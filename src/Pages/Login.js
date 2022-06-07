@@ -52,13 +52,9 @@ export function Login() {
         <h1>Administrator Login</h1>
           <div className="usernameLogin">
             <input type="text" onChange={changeUsername} placeholder='Username'/>
-            {/* <h2>UserName: </h2>
-            <h2>{Username}</h2> */}
           </div>
           <div className = "passwordLogin">
           <input type="text" onChange={changePassword} placeholder='Password'/>
-            {/* <h2>Password: </h2>
-            <h2>{Password}</h2> */}
           </div>
           <button id="loginButton" onClick={validateLogin} >Login</button> 
           
