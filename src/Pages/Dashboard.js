@@ -34,10 +34,18 @@ function Dashboard() {
     toShowSurveys()
   }
   const [postList,setPostList] = useState([]);
-
+  const [surveyStatus, setSurveyStatus] = useState(1);
+  /*
+  Axios.get("http://localhost:4000/:Dashboard").then(response => {
+      console.log("response");
+      //console.log(response.data);
+      setPostList(response.data)
+      }).catch(e => {
+        console.log(e)
+  });*/
   async function getSurvey(){
     try {
-      const surveys = Axios.get("http://localhost:4000/:Dashboard");
+      const surveys = Axios.get("http://localhost:4000/Dashboard");
       return (await surveys).data;
     } catch (err){
       console.log(err);
@@ -46,9 +54,13 @@ function Dashboard() {
   useEffect(() => {getSurvey().then( result => {
     if (result){
       setPostList(result);
+      console.log(result);
+      //console.log(result.map((s)=> `index=${s.SurveyID} name=${s.name}`));
     }});
   }, []);
-
+  // function printCS(){
+  //   console.log(data)
+  // }
   function ShowSurveys(props){
     const rows = props.surveys.map((row) => {
       return(
@@ -65,10 +77,33 @@ function Dashboard() {
       </tbody>
     );
   }
-  function ChangeStatus(surveyId){
-
+  async function ChangeStatus(surveyId, status){
+    //update status
+    try{
+      await Axios.post("http://localhost:4000/Dashboard", {surveyId : surveyId, status : status});
+    } catch(error){
+      console.log(error);
+    }
+  }
+  function showStatus(status){
+    if(status === true){
+      return "enabled";
+    }
+    else{
+      return "disabled";
+    }
   }
   function goToSurvey(surveyId){}
+  const surveyData=Survey1.map(
+      (survey)=>{
+          return(
+              <tr>
+                  <td><button className="DashboardSurveyButton" value={survey.title} onClick={setCurrentSurvey} type="button">{survey.title}</button></td>
+                  <td><button className="DashboardSurveyButton"  value={survey.title} onClick={setCurrentSurvey2} type="button">Show Surveys</button></td>
+              </tr>
+          )
+      }
+  )
 
   return (
     <div className = "AdminDashboard">

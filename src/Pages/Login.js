@@ -13,6 +13,10 @@ const AccountDB = [
   {
     'username' : 'Ollie',
     'password' : 'Dolan'
+  },
+  {
+    'username' : 'Sahra',
+    'password' : 'Zhou'
   }
 ]
 
