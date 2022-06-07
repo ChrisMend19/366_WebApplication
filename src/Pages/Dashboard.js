@@ -66,16 +66,25 @@ function Dashboard() {
   //   console.log(data)
   // }
   function ShowSurveys(props){
-    props.surveys.map((row) => {
+    const rows = props.surveys.map((row) => {
       return(
         <tr key={row.SurveyID}>
           <td>{row.name}</td>
+          <td><button type="button" onClick={()=>goToSurvey(row.SurveyID)}>Show Surveys</button></td>
+          <td><button type="button" onClick={()=>ChangeStatus(row.SurveyID)}>Change Status</button></td>
         </tr>
       )
-    })
+    });
+    return(
+      <tbody>
+        {rows}
+      </tbody>
+    );
   }
-  function ChangeStatus(){}
-  function goToSurvey(){}
+  function ChangeStatus(surveyId){
+
+  }
+  function goToSurvey(surveyId){}
   const surveyData=Survey1.map(
       (survey)=>{
           return(
@@ -93,9 +102,7 @@ function Dashboard() {
     <button id="Logout" type="button" onClick={toLogin}>Log Out</button>
     {/* <button type="button" onClick={printCS}>print</button> */}
     <h1>{saved}</h1>
-    <div>
-      <ShowSurveys surveys={postList}/>
-    </div>
+    
     <div className="tContainer">
     <table className="table">
     <thead>
@@ -105,10 +112,9 @@ function Dashboard() {
         <th>Status</th>
         </tr>
     </thead> 
-        <tbody>
-          {surveyData}
-      
-        </tbody>
+        
+        <ShowSurveys surveys={postList}/>
+        
       </table>
       </div>
     <div className="DashboardButtons">
