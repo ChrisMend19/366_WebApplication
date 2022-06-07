@@ -48,6 +48,7 @@ return (
       <button id="Logout" type="button" onClick={toLogin}>Log Out</button>
       <button id="Back" type="button" onClick={toDashboard}>Back</button>
       <h1> List of O*Net Jobs</h1>
+
       <table className ="table">
         <thead>
           <tr>
