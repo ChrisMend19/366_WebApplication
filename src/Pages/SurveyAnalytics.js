@@ -34,16 +34,31 @@ function SurveyAnalytics() {
             </table>
         </div>
 
-        {/* <div className="individualAnalytics">
-            <table class="tableIndividualAnalytics">
-                <tr>Number of Survey Types: </tr>
-                <tr>Number of Survey's Taken: </tr>
-                <tr>Number of Unique Users: </tr>
-                <tr>Number of Surveys from Unique Users</tr>
-                <tr>Number of Surveys from Annonymous Users: </tr>
-                <tr>Number of Desired Profiles associated with Users: </tr>
-            </table>
-        </div> */}
+        <div className="individualAnalytics">
+            <div class = "tContainer">
+                <table class="table">
+                    <th>Survey Type</th>
+                    <th>Number of Survey Responses</th>
+                    <th>Number of Unique Users</th>
+                    <th>Number of Surveys from Unique Users</th>
+                    <th>Number of Surveys from Annonymous Users</th>
+                    <tbody>
+                        <td>Test 1</td>
+                        <td>Test 1</td>
+                        <td>Test 1</td>
+                        <td>Test 1</td>
+                        <td>Test 1</td>
+                    </tbody>
+                    <tbody>
+                        <td>Test 2</td>
+                        <td>Test 2</td>
+                        <td>Test 2</td>
+                        <td>Test 2</td>
+                        <td>Test 2</td>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
     </div>
   );
