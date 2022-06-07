@@ -43,7 +43,7 @@ function CurrentSurvey() {
         <button id="Back" type="button" onClick={toDashboard}>Back</button>
         <button id="Edit" type="button" onClick={toEditCurrentSurvey}>Edit</button>
         <h1>Survey Name: {CurrentSurvey}</h1>
-        <h1>Survey Questions</h1>
+        <h2>Survey Questions</h2>
         <div class="tContainer">
         <table class="table">
         <tbody>

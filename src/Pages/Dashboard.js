@@ -15,7 +15,7 @@ function Dashboard() {
   const toCurrentSurvey = useCallback(() => navigate('/CurrentSurvey', {replace: true}), [navigate]);
   const toCreateProfileChar = useCallback(() => navigate('/CreateProfileChar', {replace: true}), [navigate]);
   const toShowSurveys = useCallback(() => navigate('/ShowSurveys', {replace: true}), [navigate]);
-  //const [surveys, setSurveys] = useState([]);
+
   function toLogin(){
     localStorage.setItem("LoginUsername", NaN)
     navigate('/', {replace: true});
@@ -29,72 +29,67 @@ function Dashboard() {
     toCurrentSurvey()
   }
 
-  function setCurrentSurvey(e){
-    localStorage.setItem("CurrentSurvey", e.target.value)
-    toCurrentSurvey()
-  }
-
   function setCurrentSurvey2(e){
     localStorage.setItem("CurrentSurvey", e.target.value)
     toShowSurveys()
   }
-  
-  const [postList,setPostList]=useState();
-  Axios.get("http://localhost:3000/:Dashboard").then(response => {
-      console.log("response");
-      console.log(response.data);
-      setPostList(response.data)
-      }).catch(e => {
-        console.log(e)
-  });
-  /*
+  const [postList,setPostList] = useState([]);
+
   async function getSurvey(){
-    try{
-      const result = await axios.get(`http://localhost:5000/:Dashboard`);
-      return result;
+    try {
+      const surveys = Axios.get("http://localhost:4000/:Dashboard");
+      return (await surveys).data;
     } catch (err){
       console.log(err);
     }
   }
-  useEffect(async () => {
-    getSurvey().then((result)=> {
-      if (result) {
-        setSurveys(result);ç
-      }
-    })
-  }, []);*/
-  // function printCS(){
-  //   console.log(data)
-  // }
+  useEffect(() => {getSurvey().then( result => {
+    if (result){
+      setPostList(result);
+    }});
+  }, []);
 
+  function ShowSurveys(props){
+    const rows = props.surveys.map((row) => {
+      return(
+        <tr key={row.SurveyID}>
+          <td><button className="DashboardSurveyButton" value={row.name} onClick={setCurrentSurvey} type="button">{row.name}</button></td>
+          <td><button className="DashboardSurveyButton" value={row.name} type="button" onClick={setCurrentSurvey2}>Show Surveys</button></td>
+          <td><button className="DashboardSurveyButton" type="button" onClick={()=>ChangeStatus(row.SurveyID)}>Change Status</button></td>
+        </tr>
+      )
+    });
+    return(
+      <tbody>
+        {rows}
+      </tbody>
+    );
+  }
+  function ChangeStatus(surveyId){
 
-  const surveyData=Survey1.map(
-      (survey)=>{
-          return(
-              <tr>
-                  <td><button className="DashboardSurveyButton" value={survey.title} onClick={setCurrentSurvey} type="button">{survey.title}</button></td>
-                  <td><button className="DashboardSurveyButton"  value={survey.title} onClick={setCurrentSurvey2} type="button">Show Surveys</button></td>
-                  <td><button className="DashboardSurveyButton"  type="button">Edit Survey Status</button></td>
-              </tr>
-          )
-      }
-  )
+  }
+  function goToSurvey(surveyId){}
 
   return (
     <div className = "AdminDashboard">
     <button id="Logout" type="button" onClick={toLogin}>Log Out</button>
     {/* <button type="button" onClick={printCS}>print</button> */}
     <h1>{saved}</h1>
-    {/* <table class="tableHeader">
-        <th>Survey Name</th>
-    </table> */}
+    
     <div className="tContainer">
-      <table className="table">
-      <tbody>
-        {surveyData}
-      </tbody>
+    <table className="table">
+    <thead>
+      <tr>
+        <th>Survey Name</th>
+        <th>Show Surveys</th>
+        <th>Status</th>
+        </tr>
+    </thead> 
+        
+        <ShowSurveys surveys={postList}/>
+        
       </table>
-    </div>
+      </div>
     <div className="DashboardButtons">
     <button className="DashboardButton" type="button" onClick={toOnetJobs}>
       Browse ONet Jobs
