@@ -14,6 +14,8 @@ function Dashboard() {
   const toCreateSurvey = useCallback(() => navigate('/CreateSurvey', {replace: true}), [navigate]);
   const toCurrentSurvey = useCallback(() => navigate('/CurrentSurvey', {replace: true}), [navigate]);
   const toCreateProfileChar = useCallback(() => navigate('/CreateProfileChar', {replace: true}), [navigate]);
+  const toShowSurveys = useCallback(() => navigate('/ShowSurveys', {replace: true}), [navigate]);
+
   function toLogin(){
     localStorage.setItem("LoginUsername", NaN)
     navigate('/', {replace: true});
@@ -32,6 +34,11 @@ function Dashboard() {
     toCurrentSurvey()
   }
 
+  function setCurrentSurvey2(e){
+    localStorage.setItem("CurrentSurvey", e.target.value)
+    toShowSurveys()
+  }
+
   // function printCS(){
   //   console.log(localStorage.getItem("CurrentSurvey"))
   // }
@@ -41,7 +48,7 @@ function Dashboard() {
           return(
               <tr>
                   <td><button value={survey.title} onClick={setCurrentSurvey} type="button">{survey.title}</button></td>
-                  <td><button value={survey.title} onClick={setCurrentSurvey} type="button">Show Surveys</button></td>
+                  <td><button value={survey.title} onClick={setCurrentSurvey2} type="button">Show Surveys</button></td>
                   <td><button type="button">Edit Survey Status</button></td>
               </tr>
           )

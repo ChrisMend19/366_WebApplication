@@ -30,7 +30,7 @@ function App() {
           <Route path="/CreateProfileChar" element={<CreateProfileChar />} />
           <Route path="/EditCurrentSurvey" element={<EditCurrentSurvey />} />
           <Route path="/SurveyAnalytics" element={<SurveyAnalytics />} />
-          <Route path="/ShowSurvey" element={<ShowSurveys />} />
+          <Route path="/ShowSurveys" element={<ShowSurveys />} />
         </Routes>
       </Router>
     </div>
