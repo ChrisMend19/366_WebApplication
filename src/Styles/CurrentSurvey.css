@@ -8,21 +8,15 @@
 #Edit{
     position: absolute;
     right: 125px;
-    width: 70px; 
-    height: 30px;
 }
 
 #Save{
     position: absolute;
     right: 125px;
-    width: 70px; 
-    height: 30px;
 }
 
 #AddQuestion{
     position: absolute;
-    right: 240px;
-    width: 70px; 
-    height: 30px;
+    right: 225px;
     font-size: 10px;
 }
