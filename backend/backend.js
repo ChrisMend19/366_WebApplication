@@ -47,7 +47,8 @@ app.post("/Dashboard", async (req, res) => {
 //get all questions in a survey
 app.get("/ShowSurveys/:survey", async (req, res) => {
     const id = req.params["survey"];
-    con.query(`select * from Questions where Survey = ${id};`, (err, result)=>{
+    console.log(id);
+    con.query(`select * from SurveyResponse where SurveyId = ${id};`, (err, result)=>{
         if(err) throw err
         res.status(201).send(result);
     })
@@ -56,10 +57,11 @@ app.get("/ShowSurveys/:survey", async (req, res) => {
 //get all questions for a survey
 app.get("/CurrentSurvey/:survey", async (req, res) => {
     const survey = req.params["survey"];
-    con.query(`select * from Questons where Survevy = ${survey};`, (err, result)=>{
+    con.query(`select * from Questions where Survey = ${survey};`, (err, result)=>{
         if(err) throw err
         res.status(201).send(result);
     })
+
 })
 //get possible responses for a question
 app.get("/EditCurrentSurvey/:survey", async (req, res) => {
@@ -108,7 +110,18 @@ app.get("/Job",  async (req, res) => {
           res.send(ret);
     });
 });
-
+app.get("/:survey/Recommendation/:response", async (req, res)=>{
+    const survey = req.params["survey"];
+    const response = req.params["response"];
+    if(survey == 1){
+        con.query(`select * from UREProfilesMatch where profileId = ${response};`, (err, result)=>{
+            if(err) throw err
+            res.send(result);
+        })
+    } else {
+        console.log("Wrong Survey Type");
+    }
+});
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });

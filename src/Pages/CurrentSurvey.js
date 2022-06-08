@@ -26,31 +26,32 @@ function CurrentSurvey() {
   
   const CurrentSurvey = localStorage.getItem("CurrentSurvey");
 
-  const [postList,setPostList] = useState([]);
+  const [questions,setQuestions] = useState([]);
 
-  async function getSurveyQuestions(){
+  async function getQuestions(){
     try {
-      const str = "http://localhost:4000/ShowSurveys/".concat(CurrentSurvey)
-      const surveys = Axios.get(str)
-      return (await surveys).data;
+      const survey = window.location.pathname.split("/")[2];
+      const questions = Axios.get(`http://localhost:4000/CurrentSurvey/${survey}`);
+      return (await questions).data;
     } catch (err){
       console.log(err);
     }
   }
-  
-  useEffect(() => {getSurveyQuestions().then( result => {
+
+  useEffect(() => {getQuestions().then( result => {
     if (result){
-      setPostList(result);
+      setQuestions(result);
       console.log(result);
     }});
   }, []);
 
   function ShowSurveyQuestions(props){
-    const rows = props.surveys.map((row) => {
+    const rows = props.questions.map((row) => {
       return(
         <tr key={row.Survey, row.question}>
           <td>{row.QuestionId}</td>
           <td>{row.question}</td>
+          <td>{row.profChar}</td> 
         </tr>
       )
     });
@@ -67,11 +68,11 @@ function CurrentSurvey() {
         <button id="Edit" type="button" onClick={toEditCurrentSurvey}>Edit</button>
         <h1>Survey Name: {CurrentSurvey}</h1>
         <h2>Survey Questions</h2>
-        <div class="tContainer">
-        <table class="SurveyQsTable">
-          <tbody> 
-            <ShowSurveyQuestions surveys={postList}/>
-          </tbody>
+        <div className="tContainer">
+        <table className="SurveyQsTable">
+          
+            <ShowSurveyQuestions questions={questions}/>
+         
         </table>
         </div>
     </div>
