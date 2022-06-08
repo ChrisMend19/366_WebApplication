@@ -1,1 +1,10 @@
 this folder contain files to build our database.
+
+Build the database run the following:
+source DDL-setup.sql;
+source DB-insert.sql;
+
+Cleanup the database run the following:
+source DB-cleanup.sql;
+
+Our project use group6a database.
