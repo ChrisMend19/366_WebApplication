@@ -33,7 +33,7 @@ function App() {
           <Route path="/EditCurrentSurvey" element={<EditCurrentSurvey />} />
           <Route path="/SurveyAnalytics" element={<SurveyAnalytics />} />
           <Route path="/ShowSurveys/:survey" element={<ShowSurveys />} />
-          <Route path="/SurveyResponses" element={<SurveyResponses />} />
+          <Route path="/:survey/SurveyResponses/:response" element={<SurveyResponses />} />
           <Route path="/:survey/Recommendation/:response" element={<Recommendations />} />
         </Routes>
       </Router>

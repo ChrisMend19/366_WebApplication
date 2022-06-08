@@ -122,6 +122,25 @@ app.get("/:survey/Recommendation/:response", async (req, res)=>{
         console.log("Wrong Survey Type");
     }
 });
+app.get("/:survey/SurveyResponses/:response", async (req, res)=>{
+    const survey = req.params["survey"];
+    const response = req.params["response"];
+    con.query(`
+        (select r.QuestionNo as QuestionNo, r.QValue as QValue, p.TextPrompt as TextPrompt
+        from Responses r, Possibilities p, Questions q
+        where r.SurvResp = ${response} and p.survey = ${survey}
+        and r.QuestionNo = q.QuestionId and q.qtype = p.qtype
+        and q.Survey = p.survey
+        and p.qtype = 0 and r.QValue = p.ResponseID)
+        UNION
+        (select r.QuestionNo as QuestionNo, r.QValue as QValue, p.TextPrompt as TextPrompt
+        from Responses r, Possibilities p
+        where r.SurvResp = ${response} and p.survey = ${survey}
+        and p.qtype = 1 and r.QValue = p.ResponseID);`, (err, result)=>{
+            if(err) throw err
+            res.send(result);
+        })
+});
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });
