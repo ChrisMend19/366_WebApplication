@@ -57,9 +57,9 @@ function Dashboard() {
     const rows = props.surveys.map((row, index) => {
       return(
         <tr key={row.SurveyID}>
-          <td><button type="button" onClick={()=>goToSurvey(index)}>{row.name}</button></td>
-          <td><button type="button" onClick={()=>goToShowSurveys(index)}>Show Surveys</button></td>
-          <td><button type="button" onClick={()=>ChangeStatus(index)}>
+          <td><button className="DashboardSurveyButton" type="button" onClick={()=>goToSurvey(index)}>{row.name}</button></td>
+          <td><button className="DashboardSurveyButton" type="button" onClick={()=>goToShowSurveys(index)}>Show Surveys</button></td>
+          <td><button className="DashboardSurveyButton" type="button" onClick={()=>ChangeStatus(index)}>
             {showStatus(index)}</button></td>
         </tr>
       )

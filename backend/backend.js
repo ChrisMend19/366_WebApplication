@@ -139,6 +139,47 @@ app.get("/OnetJobs", async (req, res) => {
           res.send(ret);
     });
 });
+
+// get all Onet Jobs Profs and Name by job
+app.get("/OnetJobsChar/:job", async (req, res) => {
+    const ONetJob = req.params["job"];
+    con.query(`select ONetJobChars.Title as Title, ONetJobChars.charId as charId, ONetJobChars.val as val, profileChars.dimension as dimension, profileChars.characteristics as characteristic from ONetJobChars, profileChars where ONetJobChars.Title = ${ONetJob} and ONetJobChars.CharId = profileChars.Id;`, (err, ret) =>{
+        if(err) throw err;
+          res.send(ret);
+    });
+});
+
+// app.get("/test", async (req, res) => {
+//     // const ONetJob = req.params["job"];
+//     con.query(`select * from profileChars;`, (err, ret) =>{
+//         if(err) throw err;
+//           res.send(ret);
+//     });
+// });
+
+// change val of prof char for onetjob
+app.post("/OnetJobsChar/:job", async (req, res) => {
+    console.log("here")
+    const val = req.body["val"];
+    const charId = req.body['charId'];
+    console.log(charId)
+    console.log(val)
+    const job = req.params['job'];
+    con.query(`Update ONetJobChars set val = ${val} where charId = ${charId} and Title = ${job};`, (err, ret) =>{
+        if(err) throw err;
+          res.send(ret);
+    });
+});
+
+// get all Onet Jobs Profs names by there id
+// app.get("/OnetJobsChar/:id", async (req, res) => {
+//     const profileID = req.params["id"];
+//     con.query(`select * from ONetJobChars where Title= ${profileID};`, (err, ret) =>{
+//         if(err) throw err;
+//           res.send(ret);
+//     });
+// });
+
 app.get("/Job",  async (req, res) => {
     const title = req.body["title"];
     con.query(`select * from OnetData where Title = ${title};`, (err, ret) =>{

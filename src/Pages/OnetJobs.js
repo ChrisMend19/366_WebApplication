@@ -14,17 +14,17 @@ export const LoginInfo = {
 function OnetJobs() {
   const navigate = useNavigate();
   const toDashboard = useCallback(() => navigate('/Dashboard', {replace: true}), [navigate]);
-  const toJob = useCallback(() => navigate('/OnetJob', {replace: true}), [navigate]);
+
   const [jobs, setJobs] = useState([]);
   function toLogin(){
-    localStorage.setItem("LoginUsername", NaN) // idk if it works
+    localStorage.setItem("LoginUsername", NaN)
     navigate('/', {replace: true});
   } 
-  const clicked = (e) => {
-    localStorage.setItem("job", e.target.char)
-    localStorage.setItem("jobtitle", e.target.id)
-    toJob()
-  }
+  // const clicked = (e) => {
+  //   localStorage.setItem("job", e.target.char)
+  //   localStorage.setItem("jobtitle", e.target.id)
+  //   toOnetJob()
+  // }
 
   async function getOnetJobs(){
     try{
@@ -38,14 +38,17 @@ function OnetJobs() {
   useEffect(() => {getOnetJobs().then( result => {
     if (result){
       setJobs(result);
-      console.log(result);
+      console.log(result)
     }});
   }, []);
+
   function ShowJobs(props){
     const rows = props.jobs.map((row, index) => {
       return(
         <tr key={row.Title}>
-          <td>{row.Title}</td>
+          <td><button className="Jobtitle" onClick={toOnetJob} value={row.Title}>{row.Title}</button></td>
+          <td>{row.Description}</td>
+          <td><a href={row.Link}>Link</a></td>
         </tr>
       )
     });
@@ -55,18 +58,12 @@ function OnetJobs() {
       </tbody>
     );
   }
-  const surveyData=Onet1.map(
-    (survey)=>{
-        return(
-            <tbody className="OnetJobs" key= {survey.title}>
-              <tr>
-                  <td id="OnetJobButton"><button onClick={clicked} id = {survey.title} char = {survey.char}>{survey.title}</button></td>
-                  <td id="OnetJobDesc"> {survey.content}</td>
-              </tr>
-              </tbody>
-        )
-    }
-)
+
+  function toOnetJob(e){
+    console.log(e.target.value)
+    localStorage.setItem("OnetJob", e.target.value)
+    navigate('/OnetJob', {replace: true});
+  }
 
 return (
     <div className = "Dash">
