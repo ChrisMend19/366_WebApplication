@@ -167,7 +167,7 @@ app.post("/OnetJobsChar/:job", async (req, res) => {
     const job = req.params['job'];
     con.query(`Update ONetJobChars set val = ${val} where charId = ${charId} and Title = ${job};`, (err, ret) =>{
         if(err) throw err;
-          res.send(ret);
+          res.status(200).end();
     });
 });
 

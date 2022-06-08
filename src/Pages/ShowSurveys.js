@@ -108,6 +108,7 @@ function ShowSurveys() {
     const response = responses[index];
     toRecommendation(surveyId, response.SurvResp);
   }
+  const [changeStatus, setChangeStatus] = useState("");
 
   function ShowResponses(props){
     const rows = props.responses.map((row, index) => {
@@ -117,6 +118,13 @@ function ShowSurveys() {
           </button></td>
           <td></td>
           <td>{row.Status}</td>
+          <td>
+          <select onChange={(e)=>setChangeStatus(e.target.value)} id="dropdown" dataC={row.charId} value={row.val}>
+                <option value="1">Waiting</option>
+                <option value="2">Approved</option>
+                <option value="3">Not Approved</option>
+            </select>
+          </td>
           <td><button type="button" onClick={()=>goToRecommendation(index)}>View Recommendations</button></td>
         </tr>
       )

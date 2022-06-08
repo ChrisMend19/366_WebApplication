@@ -56,10 +56,12 @@ function OnetJob() {
   //     console.log(error);
   //   }
 
-  async function changeOnetJobsProf(e){
+  async function changeOnetJobsProf(index, val){
     try{
-      const jobs = Axios.post("http://localhost:4000/OnetJobsChar/".concat(`"${jobTitle}"`), {charId : e.target.getAttribute("dataC"), val : e.target.value});
-      return (await jobs).data;
+      const job = jobs[index];
+      const jobs = Axios.post("http://localhost:4000/OnetJobsChar/".concat(`"${jobTitle}"`), {charId : job.charId, val : val});
+      //return (await jobs).data;
+      window.location.reload();
     } catch(error){
       console.log(error);
     }
@@ -80,7 +82,7 @@ function OnetJob() {
           <td>{row.val}</td>
           <td>
           {/* onChange={()=>changeOnetJobsProf(row.Title)}> */}
-            <select onChange={changeOnetJobsProf} id="dropdown" dataC={row.charId} value={row.val}>
+            <select onChange={(e)=>changeOnetJobsProf(index, e.target.value)} id="dropdown" dataC={row.charId} value={row.val}>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
