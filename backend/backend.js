@@ -28,18 +28,22 @@ app.get("/Dashboard", async (req, res) => {
 });
 
 app.post("/Dashboard", async (req, res) => {
-    const id = req.params["surveyId"];
-    const status = req.params["status"];
+    const id = req.body["surveyId"];
+    const status = req.body["status"];
     if (status == 1){
-        con.query(`update table Survey set Status = false where SurveyId = ${id};`, (err, ret) =>{
+        con.query(`update Survey set Status = false where SurveyId = ${id};`, (err, ret) =>{
             if(err) throw err;
               res.status(201).end();
         });
     }
     else{
-        con.query(`update table Survey set Status = false where SurveyId = ${id};`, (err, ret) =>{
+        con.query(`update Survey set Status = true where SurveyId = ${id};`, (err, ret) =>{
             if(err) throw err;
-              res.status(201).end();
+            con.query(`select * from Survey;`, (err, ret) =>{
+                if(err) throw err;
+                  res.send(ret);
+                  //console.log(ret);
+            });
         });
     }
 });
@@ -47,19 +51,22 @@ app.post("/Dashboard", async (req, res) => {
 //get all questions in a survey
 app.get("/ShowSurveys/:survey", async (req, res) => {
     const id = req.params["survey"];
-    con.query(`select * from Questions where Survey = ${id};`, (err, result)=>{
+    console.log(id);
+    con.query(`select * from SurveyResponse where SurveyId = ${id};`, (err, result)=>{
         if(err) throw err
         res.status(201).send(result);
     })
         
 });
+
 //get all questions for a survey
 app.get("/CurrentSurvey/:survey", async (req, res) => {
     const survey = req.params["survey"];
-    con.query(`select * from Questons where Survevy = ${survey};`, (err, result)=>{
+    con.query(`select * from Questions where Survey = ${survey};`, (err, result)=>{
         if(err) throw err
         res.status(201).send(result);
     })
+
 })
 //get possible responses for a question
 app.get("/EditCurrentSurvey/:survey", async (req, res) => {
@@ -148,6 +155,57 @@ app.get("/Job",  async (req, res) => {
         if(err) throw err;
           res.send(ret);
     });
+});
+app.get("/:survey/Recommendation/:response", async (req, res)=>{
+    const survey = req.params["survey"];
+    const response = req.params["response"];
+    if(survey == 1){
+        con.query(`select * from UREProfilesMatch where profileId = ${response};`, (err, result)=>{
+            if(err) throw err
+            res.send(result);
+        })
+    } else {
+        console.log("Wrong Survey Type");
+    }
+});
+app.get("/:survey/SurveyResponses/:response", async (req, res)=>{
+    const survey = req.params["survey"];
+    const response = req.params["response"];
+    con.query(`
+        (select r.QuestionNo as QuestionNo, r.QValue as QValue, p.TextPrompt as TextPrompt
+        from Responses r, Possibilities p, Questions q
+        where r.SurvResp = ${response} and p.survey = ${survey}
+        and r.QuestionNo = q.QuestionId and q.qtype = p.qtype
+        and q.Survey = p.survey
+        and p.qtype = 0 and r.QValue = p.ResponseID)
+        UNION
+        (select r.QuestionNo as QuestionNo, r.QValue as QValue, p.TextPrompt as TextPrompt
+        from Responses r, Possibilities p
+        where r.SurvResp = ${response} and p.survey = ${survey}
+        and p.qtype = 1 and r.QValue = p.ResponseID);`, (err, result)=>{
+            if(err) throw err
+            res.send(result);
+        })
+});
+
+//create profile chars
+app.get("/CreateProfileChar", (req, res)=>{
+    con.query(`select count(*) as cnt from profileChars`, (err, result)=>{
+        if(err) throw err
+        res.send(result);
+    })
+});
+
+app.post("/CreateProfileChar", (req, res)=>{
+    const id = req.body["Id"];
+    const dimension = req.body["dimension"];
+    const charName = req.body["char"];
+    const description = req.body["description"];
+    con.query(`insert into profileChars (Id, dimension, characteristics, descrp) 
+    values(${id}, "${dimension}", "${charName}"," ${description}")`, (err, ret)=>{
+        if(err) throw err
+        res.status(200).end();
+    })
 });
 
 app.listen(port, () => {

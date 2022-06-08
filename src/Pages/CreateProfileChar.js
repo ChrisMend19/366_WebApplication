@@ -1,9 +1,10 @@
-import React, {useState, Component, useCallback} from 'react';
+import React, {useState, Component, useCallback, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import '../Styles/App.css';
 import '../Styles/DashboardStyles.css'
 import '../Styles/CurrentSurvey.css'
 import '../Styles/CreateProfileCharStyles.css'
+import Axios from 'axios';
 
 function CreateProfileChar() {
 
@@ -18,39 +19,72 @@ function CreateProfileChar() {
     navigate('/Dashboard', {replace: true});
   }
 
-  const [newProfileChar, setProfileChar] = useState({Dimension: "", Name: "", Description: ""})
-
-  function setSavedProfileChar(){
+  //const [newProfileChar, setProfileChar] = useState({Dimension: "", Name: "", Description: ""})
+  const [name, setName] = useState("");
+  const [dimension, setDimension] = useState("");
+  const [description, setDescription] = useState("");
+  
+/*
+function setSavedProfileChar(){
       console.log(newProfileChar)
   }
-
-  function setDimension(event){
-    setProfileChar({Dimension: event.target.value, Name: newProfileChar.Name, Description: newProfileChar.Description});
+  function getDimension(event){
+    setDimension(event.target.value);
+    //setProfileChar({Dimension: event.target.value, Name: newProfileChar.Name, Description: newProfileChar.Description});
   }
 
   function setName(event){
-    setProfileChar({Dimension: newProfileChar.Dimension, Name: event.target.value, Description: newProfileChar.Description});
+    setName(event.target.value);
+    //setProfileChar({Dimension: newProfileChar.Dimension, Name: event.target.value, Description: newProfileChar.Description});
   }
 
-  function setDescription(event){
-    setProfileChar({Dimension: newProfileChar.Dimension, Name: newProfileChar.Name, Description: event.target.value});
+  function getDescription(event){
+    setDescription(event.target.value);
+    //setProfileChar({Dimension: newProfileChar.Dimension, Name: newProfileChar.Name, Description: event.target.value});
+  }*/
+  const [cnt, setCnt] = useState(0);
+  async function getNewId(){
+    try{
+      const count = await Axios.get("http://localhost:4000/CreateProfileChar");
+      return count.data;
+    } catch (error){
+      console.log(error);
+    }
   }
-
+  useEffect(() => {getNewId().then( result => {
+    if (result){
+      setCnt(result);
+      console.log(result);
+    }});
+}, []);
+  async function createProfChar(){
+    try{
+      const res = await Axios.post("http://localhost:4000/CreateProfileChar", {Id: cnt[0].cnt+1, dimension: dimension, char: name, description: description});
+      if(res.status === 200){
+        toDashboard();
+      }
+      else{
+        console.log(res);
+        }
+      } catch (error){
+      console.log(error);
+    }
+  }
 
   return (
     <div className = "CurrentSurvey">
         <button id="Logout" type="button" onClick={toLogin}>Log Out</button>
         <button id="Back" type="button" onClick={toDashboard}>Back</button>
-        <button onClick={setSavedProfileChar} id="Save" type="button">Save</button>
+        <button onClick={createProfChar} id="Save" type="button">Save</button>
         <h1>Create New Profile Characteristic</h1>
-        <div class="createProfileCharDimension">
-            <input onChange={setDimension} type="text" placeholder='Character Dimension'/>
+        <div className="createProfileCharDimension">
+            <input onChange={(e)=>setDimension(e.target.value)} type="text" placeholder='Character Dimension'/>
         </div>
-        <div class="createProfileCharName">
-            <input onChange={setName} type="text" placeholder='Name of Characteristic'/>
+        <div className="createProfileCharName">
+            <input onChange={(e)=>setName(e.target.value)} type="text" placeholder='Name of Characteristic'/>
         </div>
-        <div class="createProfileDescription">
-            <textarea onChange={setDescription} type="text" placeholder='Description of Characteristic'/>
+        <div className="createProfileDescription">
+            <textarea onChange={(e)=>setDescription(e.target.value)} type="text" placeholder='Description of Characteristic'/>
         </div>
     </div>
   );

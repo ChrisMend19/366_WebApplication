@@ -14,8 +14,8 @@ function Dashboard() {
   const toCreateSurvey = useCallback(() => navigate('/CreateSurvey', {replace: true}), [navigate]);
   const toCurrentSurvey = useCallback(() => navigate('/CurrentSurvey', {replace: true}), [navigate]);
   const toCreateProfileChar = useCallback(() => navigate('/CreateProfileChar', {replace: true}), [navigate]);
-  const toShowSurveys = useCallback(() => navigate('/ShowSurveys', {replace: true}), [navigate]);
-  const toSurvey = useCallback((index) => navigate(`/ShowSurveys/${index}`, {replace: true}, [navigate]));
+  const toShowSurveys = useCallback((index) => navigate(`/ShowSurveys/${index}`, {replace: true}), [navigate]);
+  const toSurvey = useCallback((index) => navigate(`/CurrentSurvey/${index}`, {replace: true}, [navigate]));
 
   function toLogin(){
     localStorage.setItem("LoginUsername", NaN)
@@ -57,9 +57,10 @@ function Dashboard() {
     const rows = props.surveys.map((row, index) => {
       return(
         <tr key={row.SurveyID}>
-          <td><button className="DashboardSurveyButton" value={row.SurveyID} onClick={setCurrentSurvey} type="button">{row.name}</button></td>
-          <td><button className="DashboardSurveyButton" value={row.name} type="button" onClick={setCurrentSurvey2}>Show Surveys</button></td>
-          <td><button className="DashboardSurveyButton" type="button" onClick={()=>ChangeStatus(row.SurveyID)}>Change Status</button></td>
+          <td><button className="DashboardSurveyButton" type="button" onClick={()=>goToSurvey(index)}>{row.name}</button></td>
+          <td><button className="DashboardSurveyButton" type="button" onClick={()=>goToShowSurveys(index)}>Show Surveys</button></td>
+          <td><button className="DashboardSurveyButton" type="button" onClick={()=>ChangeStatus(index)}>
+            {showStatus(index)}</button></td>
         </tr>
       )
     });
@@ -73,10 +74,16 @@ function Dashboard() {
     //update status
     try{
       const survey = postList[i];
-      await Axios.post("http://localhost:4000/Dashboard", {surveyId : survey.SurveyID, status : survey.Status});
+      const update = await Axios.post("http://localhost:4000/Dashboard", {surveyId : survey.SurveyID, status : survey.Status});
+      setPostList(update);
+      window.location.reload();
     } catch(error){
       console.log(error);
     }
+  }
+  function goToShowSurveys(index){
+    const survey = postList[index];
+    toShowSurveys(survey.SurveyID);
   }
   function showStatus(i){
     const survey = postList[i];
@@ -94,7 +101,7 @@ function Dashboard() {
   function goToSurvey(index){
     try{
       const survey = postList[index];
-      toSurvey(survey);
+      toSurvey(survey.SurveyID);
     } catch(err){
       console.log(err);
     }
@@ -115,9 +122,7 @@ function Dashboard() {
         <th>Status</th>
         </tr>
     </thead> 
-        
         <ShowSurveys surveys={postList}/>
-        
       </table>
       </div>
     <div className="DashboardButtons">
