@@ -33,7 +33,9 @@ app.post("/Dashboard", async (req, res) => {
     if (status == 1){
         con.query(`update Survey set Status = false where SurveyId = ${id};`, (err, ret) =>{
             if(err) throw err;
-              res.status(201).end();
+            con.query(`select * from Survey;`, (err, ret) =>{
+                if(err) throw err;
+                  res.send(ret);});
         });
     }
     else{
@@ -90,6 +92,25 @@ app.get("/ShowSurveys/:survey", async (req, res) => {
         
 });
 
+app.post("/ShowSurveys/:survey", async (req, res)=>{
+    const survey = req.params["survey"];
+    const id = req.body["responseId"];
+    const update = req.body["update"];
+
+    con.query(`update SurveyResponse set Status = "${update}" where SurvResp = ${id}
+               and SurveyId = ${survey}`, (err, ret)=>{
+                   if(err) throw err
+                   con.query(`select u.name as User, s.SurvResp as responseId, surv.name as sName, s.Status as Status,
+                              surv.shortName as surveyShort, surv.description as description
+                              from SurveyResponse s, User u, Survey surv
+                              where s.SurveyId = ${id} and s.User = u.UserID
+                              and s.SurveyID = surv.SurveyID;`, (err, result)=>{
+                              if(err) throw err
+                              res.status(201).send(result);
+                   })
+})
+});
+
 //get all questions for a survey
 app.get("/CurrentSurvey/:survey", async (req, res) => {
     const survey = req.params["survey"];
@@ -132,7 +153,7 @@ app.get("/SurveyResponses/:survey", async (req, res) => {
 });
 
 // ONET JOBS
-// get all Onet Jobs
+// get all Onet 
 app.get("/OnetJobs", async (req, res) => {
     con.query(`select * from ONetJobs;`, (err, ret) =>{
         if(err) throw err;
@@ -143,7 +164,11 @@ app.get("/OnetJobs", async (req, res) => {
 // get all Onet Jobs Profs and Name by job
 app.get("/OnetJobsChar/:job", async (req, res) => {
     const ONetJob = req.params["job"];
-    con.query(`select ONetJobChars.Title as Title, ONetJobChars.charId as charId, ONetJobChars.val as val, profileChars.dimension as dimension, profileChars.characteristics as characteristic from ONetJobChars, profileChars where ONetJobChars.Title = ${ONetJob} and ONetJobChars.CharId = profileChars.Id;`, (err, ret) =>{
+    con.query(`select ONetJobChars.Title as Title, ONetJobChars.charId as charId, 
+    ONetJobChars.val as val, profileChars.dimension as dimension, 
+    profileChars.characteristics as characteristic from ONetJobChars, 
+    profileChars where ONetJobChars.Title = ${ONetJob} 
+    and ONetJobChars.CharId = profileChars.Id;`, (err, ret) =>{
         if(err) throw err;
           res.send(ret);
     });
@@ -159,15 +184,20 @@ app.get("/OnetJobsChar/:job", async (req, res) => {
 
 // change val of prof char for onetjob
 app.post("/OnetJobsChar/:job", async (req, res) => {
-    console.log("here")
     const val = req.body["val"];
     const charId = req.body['charId'];
-    console.log(charId)
-    console.log(val)
     const job = req.params['job'];
     con.query(`Update ONetJobChars set val = ${val} where charId = ${charId} and Title = ${job};`, (err, ret) =>{
         if(err) throw err;
-          res.status(200).end();
+        con.query(`select ONetJobChars.Title as Title, ONetJobChars.charId as charId, 
+        ONetJobChars.val as val, profileChars.dimension as dimension, 
+        profileChars.characteristics as characteristic from ONetJobChars, 
+        profileChars where ONetJobChars.Title = ${job} 
+        and ONetJobChars.CharId = profileChars.Id;`, (err, ret) =>{
+            if(err) throw err;
+              res.send(ret);
+              //console.log(ret);
+        });
     });
 });
 
@@ -196,7 +226,7 @@ app.get("/:survey/Recommendation/:response", async (req, res)=>{
             res.send(result);
         })
     } else {
-        console.log("Wrong Survey Type");
+        console.log("surveyId: "+survey+"response: "+response);
     }
 });
 app.get("/:survey/SurveyResponses/:response", async (req, res)=>{

@@ -7,7 +7,7 @@ import Axios from 'axios';
 function ShowSurveys() {
 
   const navigate = useNavigate();
-  const surveyId = window.location.pathname.split("/")[2];
+  
   const toRecommendation = useCallback((survey, index) => navigate(`/${survey}/Recommendation/${index}`, {replace: true}), [navigate]);
   const toSurveyResponses = useCallback((survey, index) => navigate(`/${survey}/SurveyResponses/${index}`, {replace: true}), [navigate]);
   const [responses, setResponses] = useState([]);
@@ -17,6 +17,7 @@ function ShowSurveys() {
   const [surveyDesp, setSurveyDesp] = useState("");
   const [uniqueUser, setUniqueUser] = useState([]);
   const [anonymNum, setAnonymNum] = useState([]);
+  const statuses = ["Waiting", "Approved", "Not Approved"];
   function toLogin(){
     localStorage.setItem("LoginUsername", NaN) 
     navigate('/', {replace: true});
@@ -33,7 +34,7 @@ function ShowSurveys() {
   function goToSurveyResponses(index){
     const response = responses[index];
     const survey = window.location.pathname.split("/")[2];
-    toSurveyResponses(survey, response.SurvResp);
+    toSurveyResponses(survey, response.responseId);
   }
   async function getSurveyNum(){
     try {
@@ -106,10 +107,24 @@ function ShowSurveys() {
   }, []);
   function goToRecommendation(index){
     const response = responses[index];
-    toRecommendation(surveyId, response.SurvResp);
+    const surveyId = window.location.pathname.split("/")[2];
+    toRecommendation(surveyId, response.responseId);
   }
-  const [changeStatus, setChangeStatus] = useState("");
-
+  
+  async function updateStatus(index, newStatus){
+    try {
+      const response = responses[index];
+      const surveyId = window.location.pathname.split("/")[2];
+      console.log(response);
+      const result = await Axios.post(`http://localhost:4000/ShowSurveys/${surveyId}`, 
+                    {responseId: response.responseId, update:newStatus});
+      setResponses(result.data);
+      window.location.reload();
+  } catch (error){
+    console.log(error);
+  }
+    
+  }
   function ShowResponses(props){
     const rows = props.responses.map((row, index) => {
       return(
@@ -117,14 +132,14 @@ function ShowSurveys() {
           <td><button type="button" onClick={()=>goToSurveyResponses(index)}>{row.User}
           </button></td>
           <td></td>
-          <td>{row.Status}</td>
-          <td>
-          <select onChange={(e)=>setChangeStatus(e.target.value)} id="dropdown" dataC={row.charId} value={row.val}>
-                <option value="1">Waiting</option>
-                <option value="2">Approved</option>
-                <option value="3">Not Approved</option>
-            </select>
+          <td>{row.Status}
           </td>
+          <td><select onChange={(e)=>updateStatus(index, e.target.value)} id="dropdown" dataC={row.charId} value={row.val}>
+                <option value={row.Status}></option>
+                <option value="Waiting">Waiting</option>
+                <option value="Approved">Approved</option>
+                <option value="Not Approved">Not Approved</option>
+            </select></td>
           <td><button type="button" onClick={()=>goToRecommendation(index)}>View Recommendations</button></td>
         </tr>
       )
@@ -184,6 +199,7 @@ function ShowSurveys() {
                 <th>User Name</th>
                 <th>Survey Experience Name</th>
                 <th>Status</th>
+                <th>Change Status</th>
                 <th>Recommendations</th>
                 </tr>
         
