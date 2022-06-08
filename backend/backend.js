@@ -58,6 +58,7 @@ app.get("/ShowSurveys/:survey", async (req, res) => {
     })
         
 });
+
 //get all questions for a survey
 app.get("/CurrentSurvey/:survey", async (req, res) => {
     const survey = req.params["survey"];
@@ -145,6 +146,27 @@ app.get("/:survey/SurveyResponses/:response", async (req, res)=>{
             res.send(result);
         })
 });
+
+//create profile chars
+app.get("/CreateProfileChar", (req, res)=>{
+    con.query(`select count(*) as cnt from profileChars`, (err, result)=>{
+        if(err) throw err
+        res.send(result);
+    })
+});
+
+app.post("/CreateProfileChar", (req, res)=>{
+    const id = req.body["Id"];
+    const dimension = req.body["dimension"];
+    const charName = req.body["char"];
+    const description = req.body["description"];
+    con.query(`insert into profileChars (Id, dimension, characteristics, descrp) 
+    values(${id}, "${dimension}", "${charName}"," ${description}")`, (err, ret)=>{
+        if(err) throw err
+        res.status(200).end();
+    })
+});
+
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });
