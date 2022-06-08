@@ -1,0 +1,18 @@
+.createProfileCharDimension input {
+    width: 400px;
+}
+
+.createProfileCharName input {
+    width: 400px;
+}
+
+.createProfileDescription textarea {
+    width: 400px;
+    height: 100px;
+    resize: none;
+    font-family:Arial, Helvetica, sans-serif
+}
+
+
+
+

@@ -1,0 +1,16 @@
+[
+    {
+        "job" : "wrestler",
+        "char" : "Work Variety",
+        "col" : "Column",
+        "val" : 5
+    },
+
+    {
+        "job" : "Meat Maker",
+        "char" : "High Cardio",
+        "col" : "Column",
+        "val" : 7
+    
+    }
+]

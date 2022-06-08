@@ -1,0 +1,26 @@
+.CurrentSurvey table{
+    text-align:center; 
+    margin-left:auto; 
+    margin-right:auto; 
+    width: 500px;
+}
+
+#Edit{
+    position: absolute;
+    right: 125px;
+}
+
+#Save{
+    position: absolute;
+    right: 125px;
+}
+
+#AddQuestion{
+    position: absolute;
+    right: 225px;
+    font-size: 10px;
+}
+
+.SurveyQsTable {
+    width: 100px;
+}
