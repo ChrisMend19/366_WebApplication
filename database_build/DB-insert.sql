@@ -1,0 +1,14 @@
+source SurvUser.sql;
+source ProfCharDesProf.sql;
+source Questions.sql;
+source Possibilities.sql;
+source charVal.sql;
+source Work-Profiles.sql;
+source URE-Profiles.sql;
+source UREResponses-insert.sql;
+source WorkResponses-Insert.sql;
+source Onetlink.sql;
+source ONetJobChars.sql;
+source PrefMatch.sql;
+source Match-Prof-Profile.sql;
+source UREMatch.sql;
