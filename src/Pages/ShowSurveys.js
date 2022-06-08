@@ -9,6 +9,7 @@ function ShowSurveys() {
   const navigate = useNavigate();
   const surveyId = window.location.pathname.split("/")[2];
   const toRecommendation = useCallback((survey, index) => navigate(`/${survey}/Recommendation/${index}`, {replace: true}), [navigate]);
+  const toSurveyResponses = useCallback((survey, index) => navigate(`/${survey}/SurveyResponses/${index}`, {replace: true}), [navigate]);
   const [responses, setResponses] = useState([]);
   function toLogin(){
     localStorage.setItem("LoginUsername", NaN) 
@@ -22,6 +23,11 @@ function ShowSurveys() {
     console.log(e.target.value)
     localStorage.setItem("CurrentUserSurvey", "temp")
     // navigate('/SurveyResponses', {replace: true});
+  }
+  function goToSurveyResponses(index){
+    const response = responses[index];
+    const survey = window.location.pathname.split("/")[2];
+    toSurveyResponses(survey, response.SurvResp);
   }
   async function getResponses(){
     try {
@@ -43,11 +49,12 @@ function ShowSurveys() {
     const response = responses[index];
     toRecommendation(surveyId, response.SurvResp);
   }
+  
   function ShowResponses(props){
     const rows = props.responses.map((row, index) => {
       return(
         <tr key={row.SurvResp}>
-          <td>{row.SurvResp}</td>
+          <td><button type="button" onClick={()=>goToSurveyResponses(index)}>{row.SurvResp}</button></td>
           <td>{row.User}</td>
           <td><button type="button" onClick={()=>goToRecommendation(index)}>View Recommendations</button></td>
         </tr>

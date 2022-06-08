@@ -15,7 +15,7 @@ function SurveyResponses() {
     navigate('/', {replace: true});
   } 
   function toShowSurveys(){
-    navigate('/ShowSurveys', {replace: true});
+    navigate(`/ShowSurveys/${survey}`, {replace: true});
   }
   
   const CurrentSurvey = localStorage.getItem("CurrentSurvey");

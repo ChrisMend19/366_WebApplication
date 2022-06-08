@@ -74,7 +74,9 @@ function Dashboard() {
     //update status
     try{
       const survey = postList[i];
-      await Axios.post("http://localhost:4000/Dashboard", {surveyId : survey.SurveyID, status : survey.Status});
+      const update = await Axios.post("http://localhost:4000/Dashboard", {surveyId : survey.SurveyID, status : survey.Status});
+      setPostList(update);
+      window.location.reload();
     } catch(error){
       console.log(error);
     }

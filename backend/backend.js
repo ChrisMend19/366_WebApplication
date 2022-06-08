@@ -28,18 +28,22 @@ app.get("/Dashboard", async (req, res) => {
 });
 
 app.post("/Dashboard", async (req, res) => {
-    const id = req.params["surveyId"];
-    const status = req.params["status"];
+    const id = req.body["surveyId"];
+    const status = req.body["status"];
     if (status == 1){
-        con.query(`update table Survey set Status = false where SurveyId = ${id};`, (err, ret) =>{
+        con.query(`update Survey set Status = false where SurveyId = ${id};`, (err, ret) =>{
             if(err) throw err;
               res.status(201).end();
         });
     }
     else{
-        con.query(`update table Survey set Status = false where SurveyId = ${id};`, (err, ret) =>{
+        con.query(`update Survey set Status = true where SurveyId = ${id};`, (err, ret) =>{
             if(err) throw err;
-              res.status(201).end();
+            con.query(`select * from Survey;`, (err, ret) =>{
+                if(err) throw err;
+                  res.send(ret);
+                  //console.log(ret);
+            });
         });
     }
 });
