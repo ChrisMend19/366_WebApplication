@@ -15,6 +15,7 @@ function Dashboard() {
   const toCurrentSurvey = useCallback(() => navigate('/CurrentSurvey', {replace: true}), [navigate]);
   const toCreateProfileChar = useCallback(() => navigate('/CreateProfileChar', {replace: true}), [navigate]);
   const toShowSurveys = useCallback(() => navigate('/ShowSurveys', {replace: true}), [navigate]);
+  const toSurvey = useCallback((index) => navigate(`/ShowSurveys/${index}`, {replace: true}, [navigate]));
 
   function toLogin(){
     localStorage.setItem("LoginUsername", NaN)
@@ -34,7 +35,7 @@ function Dashboard() {
     toShowSurveys()
   }
   const [postList,setPostList] = useState([]);
-  const [surveyStatus, setSurveyStatus] = useState(1);
+  //const [surveyStatus, setSurveyStatus] = useState(1);
 
   async function getSurvey(){
     try {
@@ -91,7 +92,14 @@ function Dashboard() {
       return "undefined";
     }
   }
-  function goToSurvey(surveyId){}
+  function goToSurvey(index){
+    try{
+      const survey = postList[index];
+      toSurvey(survey);
+    } catch(err){
+      console.log(err);
+    }
+  }
 
   return (
     <div className = "AdminDashboard">

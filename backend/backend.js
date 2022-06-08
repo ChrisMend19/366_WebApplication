@@ -53,10 +53,19 @@ app.get("/ShowSurveys/:survey", async (req, res) => {
     })
         
 });
+//get all questions for a survey
+app.get("/CurrentSurvey/:survey", async (req, res) => {
+    const survey = req.params["survey"];
+    con.query(`select * from Questons where Survevy = ${survey};`, (err, result)=>{
+        if(err) throw err
+        res.status(201).send(result);
+    })
+})
 //get possible responses for a question
-app.get("/CurrentSurvey/:survey/edit", async (req, res) => {
+app.get("/EditCurrentSurvey/:survey", async (req, res) => {
     const qId = req.body["questionId"];
     const qtype = req.body["qtype"];
+    const survey = req.params["survey"];
     if(qtype == 1){
         con.query(`select * from Possibilities where qtpye = ${qtype} and survey = ${survey};`,
          (err, result)=>{
@@ -72,7 +81,9 @@ app.get("/CurrentSurvey/:survey/edit", async (req, res) => {
         })
     }
 })
-
+app.delete("/EditCurrentSurvey/:survey", async (req, res)=>{
+    
+})
 //get survey responses on responses page
 app.get("/SurveyResponses/:survey", async (req, res) => {
     const SurveyId = req.params["survey"];
@@ -85,7 +96,7 @@ app.get("/SurveyResponses/:survey", async (req, res) => {
 // ONET JOBS
 // get all Onet Jobs
 app.get("/OnetJobs", async (req, res) => {
-    con.query(`select * from OnetJobs;`, (err, ret) =>{
+    con.query(`select * from ONetJobs;`, (err, ret) =>{
         if(err) throw err;
           res.send(ret);
     });

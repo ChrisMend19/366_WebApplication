@@ -1,13 +1,13 @@
-import React, {useState, Component, useCallback} from 'react';
+import React, {useState, Component, useCallback, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import '../Styles/ShowSurveys.css'
 import SurveyResps from '../Data/surveysResponses.json'
-
+import Axios from 'axios';
 
 function ShowSurveys() {
 
   const navigate = useNavigate();
-
+  const [questions, setQuestions] = useState([]);
   function toLogin(){
     localStorage.setItem("LoginUsername", NaN) 
     navigate('/', {replace: true});
@@ -21,7 +21,39 @@ function ShowSurveys() {
     localStorage.setItem("CurrentUserSurvey", "temp")
     // navigate('/SurveyResponses', {replace: true});
   }
+  async function getQuestions(){
+    try {
+      const survey = window.location.pathname.split("/")[2];
+      const questions = Axios.get(`http://localhost:4000/ShowSurveys/${survey}`);
+      return (await questions).data;
+    } catch (err){
+      console.log(err);
+    }
+  }
 
+  useEffect(() => {getQuestions().then( result => {
+    if (result){
+      setQuestions(result);
+      console.log(result);
+    }});
+  }, []);
+
+  function ShowQuestion(props){
+    const rows = props.surveys.map((row, index) => {
+      return(
+        <tr key={row.QuestionId}>
+          <td>{row.QuestionId}</td>
+          <td>{row.question}</td>
+          <td>{row.profChar}</td> 
+        </tr>
+      )
+    });
+    return(
+      <tbody>
+        {rows}
+      </tbody>
+    );
+  }
   const CurrentSurvey = localStorage.getItem("CurrentSurvey");
 
   const SurveyResData=SurveyResps.map(
@@ -54,9 +86,7 @@ function ShowSurveys() {
         </div>
         <div className="individualResponses">
           <table className="table">
-            <tbody>
-              {SurveyResData}
-            </tbody>
+            <ShowQuestion props={questions}/>
           </table>
         </div>
     </div>
