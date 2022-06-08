@@ -239,6 +239,56 @@ app.post("/CreateProfileChar", (req, res)=>{
     })
 });
 
+// Analytics
+app.get("/SurveyAnalytics", (req, res)=>{
+    con.query(`select count(*) as cnt from Survey`, (err, ret)=>{
+        if(err) throw err
+        res.send(ret);
+        res.status(200).end();
+    })
+});
+
+app.get("/SurveyAnalyticsResp", (req, res)=>{
+    con.query(`select count(distinct SurvResp) as cnt from SurveyResponse`, (err, ret)=>{
+        if(err) throw err
+        res.send(ret);
+        res.status(200).end();
+    })
+});
+
+app.get("/SurveyAnalyticsUsers", (req, res)=>{
+    con.query(`select count(distinct UserID) as cnt from User where UserID != 0`, (err, ret)=>{
+        if(err) throw err
+        res.send(ret);
+        res.status(200).end();
+    })
+});
+
+app.get("/SurveyAnalyticsAnnUsers", (req, res)=>{
+    con.query(`select count(distinct SurvResp) as cnt from SurveyResponse where User = 0`, (err, ret)=>{
+        if(err) throw err
+        res.send(ret);
+        res.status(200).end();
+    })
+});
+
+app.get("/SurveyAnalyticsRegUsers", (req, res)=>{
+    con.query(`select count(distinct SurvResp) as cnt from SurveyResponse where User != 0`, (err, ret)=>{
+        if(err) throw err
+        res.send(ret);
+        res.status(200).end();
+    })
+});
+
+app.get("/SurveyAnalyticsDes", (req, res)=>{
+    con.query(`select count(*) as cnt from DesProfiles where User != 0`, (err, ret)=>{
+        if(err) throw err
+        res.send(ret);
+        res.status(200).end();
+    })
+});
+
+
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });
