@@ -67,13 +67,13 @@ function Dashboard() {
   //   console.log(data)
   // }
   function ShowSurveys(props){
-    const rows = props.surveys.map((row) => {
+    const rows = props.surveys.map((row, index) => {
       return(
         <tr key={row.SurveyID}>
           <td>{row.name}</td>
-          <td><button type="button" onClick={()=>goToSurvey(row.SurveyID)}>Show Surveys</button></td>
-          <td><button type="button" onClick={()=>ChangeStatus(row.SurveyID, row.status)}>
-            {showStatus(row.status)}</button></td>
+          <td><button type="button" onClick={()=>goToSurvey(index)}>Show Surveys</button></td>
+          <td><button type="button" onClick={()=>ChangeStatus(index)}>
+            {showStatus(index)}</button></td>
         </tr>
       )
     });
@@ -83,20 +83,26 @@ function Dashboard() {
       </tbody>
     );
   }
-  async function ChangeStatus(surveyId, status){
+  async function ChangeStatus(i){
     //update status
     try{
-      await Axios.post("http://localhost:4000/Dashboard", {surveyId : surveyId, status : status});
+      const survey = postList[i];
+      await Axios.post("http://localhost:4000/Dashboard", {surveyId : survey.SurveyID, status : survey.Status});
     } catch(error){
       console.log(error);
     }
   }
-  function showStatus(status){
-    if(status === true){
+  function showStatus(i){
+    const survey = postList[i];
+    const status = survey.Status;
+    if(status == 1){
       return "enabled";
     }
-    else{
+    else if(status == 0){
       return "disabled";
+    }
+    else if(status == undefined){
+      return "undefined";
     }
   }
   function goToSurvey(surveyId){}
