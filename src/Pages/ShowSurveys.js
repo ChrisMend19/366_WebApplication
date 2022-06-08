@@ -11,6 +11,12 @@ function ShowSurveys() {
   const toRecommendation = useCallback((survey, index) => navigate(`/${survey}/Recommendation/${index}`, {replace: true}), [navigate]);
   const toSurveyResponses = useCallback((survey, index) => navigate(`/${survey}/SurveyResponses/${index}`, {replace: true}), [navigate]);
   const [responses, setResponses] = useState([]);
+  const [surveyNum, setSurveyNum] = useState([]);
+  const [surveyShort, setSurveyShort] = useState("");
+  const [surveyName, setSurveyName] = useState("");
+  const [surveyDesp, setSurveyDesp] = useState("");
+  const [uniqueUser, setUniqueUser] = useState([]);
+  const [anonymNum, setAnonymNum] = useState([]);
   function toLogin(){
     localStorage.setItem("LoginUsername", NaN) 
     navigate('/', {replace: true});
@@ -29,33 +35,88 @@ function ShowSurveys() {
     const survey = window.location.pathname.split("/")[2];
     toSurveyResponses(survey, response.SurvResp);
   }
-  async function getResponses(){
+  async function getSurveyNum(){
     try {
       const survey = window.location.pathname.split("/")[2];
-      const responses = Axios.get(`http://localhost:4000/ShowSurveys/${survey}`);
+      const s = "nums";
+      const responses = Axios.get(`http://localhost:4000/ShowSurveys/${survey}?stat=${s}`);
       return (await responses).data;
     } catch (err){
       console.log(err);
     }
   }
-
+  
+  async function getAnonymous(){
+    try {
+      const survey = window.location.pathname.split("/")[2];
+      const s = "anonymous";
+      const responses = Axios.get(`http://localhost:4000/ShowSurveys/${survey}?stat=${s}`);
+      return (await responses).data;
+    } catch (err){
+      console.log(err);
+    }
+  }
+  async function getUniqueUser(){
+    try {
+      const survey = window.location.pathname.split("/")[2];
+      const s = "unique";
+      const responses = Axios.get(`http://localhost:4000/ShowSurveys/${survey}?stat=${s}`);
+      return (await responses).data;
+    } catch (err){
+      console.log(err);
+    }
+  }
+  async function getResponses(){
+    try {
+      const survey = window.location.pathname.split("/")[2];
+      const s = "responses";
+      const responses = Axios.get(`http://localhost:4000/ShowSurveys/${survey}?stat=${s}`);
+      return (await responses).data;
+    } catch (err){
+      console.log(err);
+    }
+  }
+  useEffect(()=>{getAnonymous().then(result =>{
+    if(result){
+      setAnonymNum(result);
+    }
+  });
+  }, [])
+  useEffect(()=>{getSurveyNum().then(result =>{
+    if(result){
+      setSurveyNum(result)
+    }
+  });
+  }, [])
+  useEffect(()=>{getUniqueUser().then(result =>{
+    if(result){
+      setUniqueUser(result);
+    }
+  });
+  }, [])
   useEffect(() => {getResponses().then( result => {
     if (result){
       setResponses(result);
-      console.log(result);
+      console.log(result[0]);
+      setSurveyName(result[0].sName);
+      setSurveyDesp(result[0].description);
+      setSurveyShort(result[0].surveyShort);
+      console.log(result[0].surveyShort);
     }});
   }, []);
   function goToRecommendation(index){
     const response = responses[index];
     toRecommendation(surveyId, response.SurvResp);
   }
-  
+
   function ShowResponses(props){
     const rows = props.responses.map((row, index) => {
       return(
-        <tr key={row.SurvResp}>
-          <td><button type="button" onClick={()=>goToSurveyResponses(index)}>{row.SurvResp}</button></td>
-          <td>{row.User}</td>
+        <tr key={row.responseId}>
+          <td><button type="button" onClick={()=>goToSurveyResponses(index)}>{row.User}
+          </button></td>
+          <td></td>
+          <td>{row.Status}</td>
           <td><button type="button" onClick={()=>goToRecommendation(index)}>View Recommendations</button></td>
         </tr>
       )
@@ -67,29 +128,54 @@ function ShowSurveys() {
     );
   }
   const CurrentSurvey = localStorage.getItem("CurrentSurvey");
-
   
-
+  function ShowData(props){
+    const tot = props.num.map((row, index)=>{
+      return(<tr>
+        <th>Number of Survey Responses:</th>{row.total}
+      </tr>)
+    })
+    const uniq = props.uniq.map((row, index)=>{
+      return(<tr>
+        <th>Number of Unique User:</th>{row.uniqueUser}
+      </tr>)
+    })
+    const anony = props.anony.map((row, index)=>{
+     return( <tr>
+        <th>Number of Anonymous User:</th>{row.anonymous}
+      </tr>)
+    })
+    return(
+      <tbody>
+        {tot}
+        {uniq}
+        {anony}
+      </tbody>
+    )
+  }
+  //nums, uniq, anonys
   return (
     <div className = "CurrentSurvey">
         <button id="Logout" type="button" onClick={toLogin}>Log Out</button>
         <button id="Back" type="button" onClick={toDashboard}>Back</button>
-        <h1>Survey Name: {CurrentSurvey}</h1>
+        <h1>Survey Name: {surveyShort}</h1>
         <h2>Show Surveys</h2>
-        <div className="SurveyData">
-            <table className="tableSurveyData">
-            <tr>Number of Survey Types: </tr>
-                <tr>Survey Type: </tr>
-                <tr>Number of Unique Users: </tr>
-                <tr>Number of Annonymous Users: </tr>
-            </table>
+        <div>
+          <table>
+            <tr><th>Survey Full Name: </th>{surveyName}</tr>
+            <tr><th>Survey Description: </th>{surveyDesp}</tr>
+          <ShowData num={surveyNum}
+                      uniq={uniqueUser}
+                      anony={anonymNum}/>
+          </table>
         </div>
         <div className="individualResponses">
           <table className="table">
             <thead>
               <tr>
-                <th>Survey Response Id</th>
-                <th>User ID</th>
+                <th>User Name</th>
+                <th>Survey Experience Name</th>
+                <th>Status</th>
                 <th>Recommendations</th>
                 </tr>
         

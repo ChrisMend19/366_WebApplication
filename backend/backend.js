@@ -51,11 +51,42 @@ app.post("/Dashboard", async (req, res) => {
 //get all questions in a survey
 app.get("/ShowSurveys/:survey", async (req, res) => {
     const id = req.params["survey"];
-    console.log(id);
-    con.query(`select * from SurveyResponse where SurveyId = ${id};`, (err, result)=>{
-        if(err) throw err
-        res.status(201).send(result);
-    })
+    const stat = req.query["stat"];
+    if(stat == "responses"){
+        con.query(`select u.name as User, s.SurvResp as responseId, surv.name as sName, s.Status as Status,
+        surv.shortName as surveyShort, surv.description as description
+        from SurveyResponse s, User u, Survey surv
+        where s.SurveyId = ${id} and s.User = u.UserID
+        and s.SurveyID = surv.SurveyID;`, (err, result)=>{
+            if(err) throw err
+            //console.log(result);
+            res.status(201).send(result);
+        })
+    }
+    else if(stat == "nums"){
+        con.query(`select count(*) as total from SurveyResponse where SurveyId = ${id};`, (err, result)=>{
+            if(err) throw err
+            res.send(result);
+        })
+    }
+    else if(stat == "anonymous"){
+        con.query(`select count(*) as anonymous from SurveyResponse s, User u
+                   where s.SurveyId = ${id} and s.User = u.UserID
+                   and u.name = "anonymous;"`, (err, result)=>{
+                       if(err) throw err
+                       res.send(result);
+                   })
+    }
+    else if(stat == "unique"){
+        con.query(`select count(distinct User) as uniqueUser from SurveyResponse
+                   where SurveyId = ${id};`, (err, result)=>{
+                       if(err) throw err
+                       res.send(result);
+                   })
+    }
+    else{
+        console.log(stat);
+    }
         
 });
 
