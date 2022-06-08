@@ -12,6 +12,7 @@ import EditCurrentSurvey from './Pages/EditCurrentSurvey';
 import SurveyAnalytics from './Pages/SurveyAnalytics';
 import CreateProfileChar from './Pages/CreateProfileChar';
 import ShowSurveys from './Pages/ShowSurveys';
+import SurveyResponses from './Pages/SurveyResponses';
 // CSS
 import './Styles/App.css'
 
@@ -31,6 +32,7 @@ function App() {
           <Route path="/EditCurrentSurvey" element={<EditCurrentSurvey />} />
           <Route path="/SurveyAnalytics" element={<SurveyAnalytics />} />
           <Route path="/ShowSurveys" element={<ShowSurveys />} />
+          <Route path="/SurveyResponses" element={<SurveyResponses />} />
         </Routes>
       </Router>
     </div>

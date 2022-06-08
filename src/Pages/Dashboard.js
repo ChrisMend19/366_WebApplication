@@ -29,25 +29,13 @@ function Dashboard() {
     toCurrentSurvey()
   }
 
-  function setCurrentSurvey(e){
-    localStorage.setItem("CurrentSurvey", e.target.value)
-    toCurrentSurvey()
-  }
-
   function setCurrentSurvey2(e){
     localStorage.setItem("CurrentSurvey", e.target.value)
     toShowSurveys()
   }
   const [postList,setPostList] = useState([]);
   const [surveyStatus, setSurveyStatus] = useState(1);
-  /*
-  Axios.get("http://localhost:4000/:Dashboard").then(response => {
-      console.log("response");
-      //console.log(response.data);
-      setPostList(response.data)
-      }).catch(e => {
-        console.log(e)
-  });*/
+
   async function getSurvey(){
     try {
       const surveys = Axios.get("http://localhost:4000/Dashboard");
@@ -56,16 +44,14 @@ function Dashboard() {
       console.log(err);
     }
   }
+
   useEffect(() => {getSurvey().then( result => {
     if (result){
       setPostList(result);
       console.log(result);
-      //console.log(result.map((s)=> `index=${s.SurveyID} name=${s.name}`));
     }});
   }, []);
-  // function printCS(){
-  //   console.log(data)
-  // }
+
   function ShowSurveys(props){
     const rows = props.surveys.map((row, index) => {
       return(
@@ -106,16 +92,6 @@ function Dashboard() {
     }
   }
   function goToSurvey(surveyId){}
-  const surveyData=Survey1.map(
-      (survey)=>{
-          return(
-              <tr>
-                  <td><button className="DashboardSurveyButton" value={survey.title} onClick={setCurrentSurvey} type="button">{survey.title}</button></td>
-                  <td><button className="DashboardSurveyButton"  value={survey.title} onClick={setCurrentSurvey2} type="button">Show Surveys</button></td>
-              </tr>
-          )
-      }
-  )
 
   return (
     <div className = "AdminDashboard">
