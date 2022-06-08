@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import '../Styles/App.css';
 import '../Styles/DashboardStyles.css'
 import Onet1 from '../Data/OnetJobs.json'
-// import Dashboard from './Dashboard'
+import Axios from 'axios';
 
 
 export const LoginInfo = {
@@ -23,10 +23,16 @@ function OnetJobs() {
   const clicked = (e) => {
     localStorage.setItem("job", e.target.char)
     localStorage.setItem("jobtitle", e.target.id)
-    console.log(localStorage.getItem("job"))
     toJob()
+  }
 
+  async function getOnetJobs(){
+    try{
+      await Axios.get("http://localhost:4000/OnetJobs");
+    } catch(error){
+      console.log(error);
     }
+  }
 
   const surveyData=Onet1.map(
     (survey)=>{

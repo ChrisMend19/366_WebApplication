@@ -1,10 +1,11 @@
-import React, {useState, Component, useCallback} from 'react';
+import React, {useState, Component, useCallback, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import '../Styles/App.css';
 import '../Styles/DashboardStyles.css'
 import '../Styles/CurrentSurvey.css'
 import Login from './Login.js'
 import Survey1Qs from '../Data/Survey1Questions.json'
+import Axios from 'axios';
 
 function CurrentSurvey() {
 
@@ -25,17 +26,39 @@ function CurrentSurvey() {
   
   const CurrentSurvey = localStorage.getItem("CurrentSurvey");
 
-    //  sql command: get all survey questions with surveyID = survey1Qs.SurveyID
-    const survey1QuestionData=Survey1Qs.map(
-        (survey1Qs)=>{
-            return(
-                <tr>
-                    <td>{survey1Qs.QuestionID}</td>
-                    <td>{survey1Qs.question}</td>
-                </tr>
-            )
-        }
-    ) 
+  const [postList,setPostList] = useState([]);
+
+  async function getSurveyQuestions(){
+    try {
+      const str = "http://localhost:4000/ShowSurveys/".concat(CurrentSurvey)
+      const surveys = Axios.get(str)
+      return (await surveys).data;
+    } catch (err){
+      console.log(err);
+    }
+  }
+  
+  useEffect(() => {getSurveyQuestions().then( result => {
+    if (result){
+      setPostList(result);
+      console.log(result);
+    }});
+  }, []);
+
+  function ShowSurveyQuestions(props){
+    const rows = props.surveys.map((row) => {
+      return(
+        <tr key={row.Survey, row.question}>
+          <td>{row.QuestionId}</td>
+          <td>{row.question}</td>
+        </tr>
+      )
+    });
+    return(
+      <tbody>
+        {rows}
+      </tbody>
+    )};
 
   return (
     <div className = "CurrentSurvey">
@@ -45,10 +68,10 @@ function CurrentSurvey() {
         <h1>Survey Name: {CurrentSurvey}</h1>
         <h2>Survey Questions</h2>
         <div class="tContainer">
-        <table class="table">
-        <tbody>
-            {survey1QuestionData}
-        </tbody>
+        <table class="SurveyQsTable">
+          <tbody> 
+            <ShowSurveyQuestions surveys={postList}/>
+          </tbody>
         </table>
         </div>
     </div>

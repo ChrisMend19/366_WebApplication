@@ -35,14 +35,7 @@ function Dashboard() {
   }
   const [postList,setPostList] = useState([]);
   const [surveyStatus, setSurveyStatus] = useState(1);
-  /*
-  Axios.get("http://localhost:4000/:Dashboard").then(response => {
-      console.log("response");
-      //console.log(response.data);
-      setPostList(response.data)
-      }).catch(e => {
-        console.log(e)
-  });*/
+
   async function getSurvey(){
     try {
       const surveys = Axios.get("http://localhost:4000/Dashboard");
@@ -51,21 +44,19 @@ function Dashboard() {
       console.log(err);
     }
   }
+
   useEffect(() => {getSurvey().then( result => {
     if (result){
       setPostList(result);
       console.log(result);
-      //console.log(result.map((s)=> `index=${s.SurveyID} name=${s.name}`));
     }});
   }, []);
-  // function printCS(){
-  //   console.log(data)
-  // }
+
   function ShowSurveys(props){
     const rows = props.surveys.map((row) => {
       return(
         <tr key={row.SurveyID}>
-          <td><button className="DashboardSurveyButton" value={row.name} onClick={setCurrentSurvey} type="button">{row.name}</button></td>
+          <td><button className="DashboardSurveyButton" value={row.SurveyID} onClick={setCurrentSurvey} type="button">{row.name}</button></td>
           <td><button className="DashboardSurveyButton" value={row.name} type="button" onClick={setCurrentSurvey2}>Show Surveys</button></td>
           <td><button className="DashboardSurveyButton" type="button" onClick={()=>ChangeStatus(row.SurveyID)}>Change Status</button></td>
         </tr>
@@ -85,6 +76,7 @@ function Dashboard() {
       console.log(error);
     }
   }
+
   function showStatus(status){
     if(status === true){
       return "enabled";
@@ -94,16 +86,6 @@ function Dashboard() {
     }
   }
   function goToSurvey(surveyId){}
-  const surveyData=Survey1.map(
-      (survey)=>{
-          return(
-              <tr>
-                  <td><button className="DashboardSurveyButton" value={survey.title} onClick={setCurrentSurvey} type="button">{survey.title}</button></td>
-                  <td><button className="DashboardSurveyButton"  value={survey.title} onClick={setCurrentSurvey2} type="button">Show Surveys</button></td>
-              </tr>
-          )
-      }
-  )
 
   return (
     <div className = "AdminDashboard">

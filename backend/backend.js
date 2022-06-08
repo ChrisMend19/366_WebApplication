@@ -16,7 +16,9 @@ const con = mysql.createConnection({
 app.use(cors());
 app.use(express.json());
 
+// Surveys
 
+// get all surveys
 app.get("/Dashboard", async (req, res) => {
     con.query(`select * from Survey;`, (err, ret) =>{
         if(err) throw err;
@@ -24,6 +26,7 @@ app.get("/Dashboard", async (req, res) => {
           //console.log(ret);
     });
 });
+
 app.post("/Dashboard", async (req, res) => {
     const id = req.params["surveyId"];
     const status = req.params["status"];
@@ -40,6 +43,7 @@ app.post("/Dashboard", async (req, res) => {
         });
     }
 });
+
 //get all questions in a survey
 app.get("/ShowSurveys/:survey", async (req, res) => {
     const id = req.params["survey"];
@@ -48,6 +52,7 @@ app.get("/ShowSurveys/:survey", async (req, res) => {
         res.status(201).send(result);
     })
 });
+
 //get survey responses on responses page
 app.get("/SurveyResponses/:survey", async (req, res) => {
     const SurveyId = req.params["survey"];
@@ -55,6 +60,15 @@ app.get("/SurveyResponses/:survey", async (req, res) => {
         if(err) throw err;
           res.status(201).send(result);
     })
+});
+
+// ONET JOBS
+// get all Onet Jobs
+app.get("/OnetJobs", async (req, res) => {
+    con.query(`select * from OnetJobs;`, (err, ret) =>{
+        if(err) throw err;
+          res.send(ret);
+    });
 });
 
 
