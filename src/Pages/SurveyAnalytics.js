@@ -13,7 +13,7 @@ function SurveyAnalytics() {
   const [SA, setSA] = useState([]);///OnetJobsChar/:id
   const [SU, setSU] = useState([]);///OnetJobsChar/:id
   const [Des, setDes] = useState([]);///OnetJobsChar/:id
-
+  const [surveyData, setSData] = useState([]);
   function toLogin(){
     localStorage.setItem("LoginUsername", NaN) 
     navigate('/', {replace: true});
@@ -97,7 +97,20 @@ function SurveyAnalytics() {
       </tbody>
     );
   }
-
+  async function getSurveyData(){
+    try{
+      const result = Axios.get("http://localhost:4000/SurveyAnalyticsSurveyData");
+      return (await result).data;
+    } catch(error){
+      console.log(error);
+    }
+  }
+  useEffect(()=>{getSurveyData().then(result =>
+    {
+      if(result){
+        setSData(result);
+      }
+    })}, [])
   async function getSurveySU(e){
     try{
       const jobs = Axios.get("http://localhost:4000/SurveyAnalyticsRegUsers");
@@ -192,7 +205,7 @@ function SurveyAnalytics() {
     const rows = props.users.map((row, index) => {
       return(
         <tr>
-          <td>Number of Unique Users: {row.cnt}</td>
+          <td>Number of Unique User who took survey:   {row.cnt}  </td>
         </tr>
       )
     });
@@ -201,6 +214,25 @@ function SurveyAnalytics() {
         {rows}
       </tbody>
     );
+  }
+  function ShowSurveyD(props){
+    const rows = props.surveyData.map((row, index)=>{
+      return(
+        <tr key={index}>
+          <td>{row.survey}</td>
+          <td>{row.total}</td>
+          <td>{row.uniq}</td>
+          <td>{row.totalUniq}</td>
+          <td>{row.anonyTotal}</td>
+        </tr>
+      )
+    })
+    return(
+
+      <tbody>
+        {rows}
+      </tbody>
+    )
   }
 
   return (
@@ -226,27 +258,17 @@ function SurveyAnalytics() {
         </div>
 
         <div className="individualAnalytics">
-            <div class = "tContainer">
-                <table class="table">
+            <div className = "tContainer">
+                <table className="table">
                     <th>Survey Type</th>
-                    <th>Number of Survey Responses</th>
-                    <th>Number of Unique Users</th>
-                    <th>Number of Surveys from Unique Users</th>
-                    <th>Number of Surveys from Annonymous Users</th>
-                    <tbody>
-                        <td>Test 1</td>
-                        <td>Test 1</td>
-                        <td>Test 1</td>
-                        <td>Test 1</td>
-                        <td>Test 1</td>
-                    </tbody>
-                    <tbody>
-                        <td>Test 2</td>
-                        <td>Test 2</td>
-                        <td>Test 2</td>
-                        <td>Test 2</td>
-                        <td>Test 2</td>
-                    </tbody>
+                    <th>Total Number of Survey Responses</th>
+                    <th>Number of Unique User Responses</th>
+                    <th>Total Number of Responses Taken by Unique Users</th>
+                    <td>Number of Anonymous User Responses</td>
+                    
+                        <ShowSurveyD surveyData={surveyData}/>
+                  
+                    
                 </table>
             </div>
         </div>

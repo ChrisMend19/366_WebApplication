@@ -287,15 +287,31 @@ app.get("/SurveyAnalyticsResp", (req, res)=>{
 });
 
 app.get("/SurveyAnalyticsUsers", (req, res)=>{
-    con.query(`select count(distinct UserID) as cnt from User where UserID != 0`, (err, ret)=>{
+    con.query(`select count(distinct User) as cnt 
+               from SurveyResponse sr, User u
+               where sr.User = u.UserID and u.name != "anonymous";`, (err, ret)=>{
         if(err) throw err
         res.send(ret);
         res.status(200).end();
     })
 });
-
+app.get("/SurveyAnalyticsSurveyData", (req, res)=>{
+    con.query(`select s.shortName as survey, count(distinct sr.SurvResp) as total, 
+    count(distinct sr1.SurvResp) as totalUniq,
+    count(distinct u1.UserID) as uniq, count(distinct sr2.SurvResp) as anonyTotal
+    from Survey s, User u1, SurveyResponse sr1, SurveyResponse sr2, User u2, SurveyResponse sr
+    where s.SurveyID = sr1.SurveyId and sr1.User = u1.UserID and sr.SurveyId = s.SurveyID
+    and u1.name != "anonymous" and s.SurveyID = sr2.SurveyID
+    and sr2.User = u2.UserID and u2.name = "anonymous"
+    group by s.shortName
+    ;`, (err, result)=>{
+        if(err) throw err
+        res.send(result);
+    })
+});
 app.get("/SurveyAnalyticsAnnUsers", (req, res)=>{
-    con.query(`select count(distinct SurvResp) as cnt from SurveyResponse where User = 0`, (err, ret)=>{
+    con.query(`select count(distinct SurvResp) as cnt from SurveyResponse sr, User u
+               where sr.User = u.UserID and u.name = "anonymous"`, (err, ret)=>{
         if(err) throw err
         res.send(ret);
         res.status(200).end();

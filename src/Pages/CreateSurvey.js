@@ -1,18 +1,59 @@
-import React, {useState, Component, useCallback} from 'react';
+import React, {useState, Component, useCallback, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import Survey1Qs from '../Data/Survey1Questions.json'
 import '../Styles/CreateSurvey.css'
 import '../Styles/DashboardStyles.css'
+import PopUp from './PopUp.js'
+//import { Form, Input } from 'formsy-react-components';
+import Axios from 'axios';
 
 function CreateSurvey() {
 
-    localStorage.setItem("CreateSurveyName", NaN)
+  const [postList,setPostList] = useState([]);
+
+  async function getSurvey(){
+    try {
+      const surveys = Axios.get("http://localhost:4000/Dashboard");
+      return (await surveys).data;
+    } catch (err){
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {getSurvey().then( result => {
+    if (result){
+      setPostList(result);
+      console.log(result);
+    }});
+  }, []);
+
+  function ShowSurveys(props){
+    const rows = props.surveys.map((row) => {
+      return(
+        <tr key={row.SurveyID}>
+          <td><button className="DashboardSurveyButton" value={row.SurveyID} type="button">{row.name}</button></td>
+          
+
+        </tr>
+      )
+    });
+    return(
+      <tbody>
+        {rows}
+      </tbody>
+    );
+  }
+
+    
     const [SurveyName, setSurveyName] = useState("")
 
     const navigate = useNavigate();
     function toLogin(){
       localStorage.setItem("LoginUsername", NaN) 
       navigate('/', {replace: true});
+    } 
+    function openPop(){
+      navigate('/CreateSurvey/Question', {replace: true});
     } 
 
     function toDashboard(){
@@ -23,15 +64,13 @@ function CreateSurvey() {
     function changeSurveyName(event){
       localStorage.setItem("CreateSurveyName", event.target.value)
       setSurveyName(event.target.value)
+      console.log(SurveyName)
     }
 
     const survey1QuestionData=Survey1Qs.map(
       (survey1Qs)=>{
           return(
-              <tr>
-                  <td>{survey1Qs.QuestionID}</td>
-                  <td>{survey1Qs.question}</td>
-              </tr>
+            <ShowSurveys surveys={postList}/>
           )
       }
   ) 
@@ -46,12 +85,13 @@ function CreateSurvey() {
         <input onChange={changeSurveyName} type="text" placeholder='Survey Name'/>
       </div>
       <div className="SurveyQuestionContainer">
-        <button>Add New Question</button>
+        <button onClick = {openPop} >Add New Question</button>
       </div>
       <div className="SurveyQuestionTableContainer">
-        <table class="table">
+        <table className="table">
         <tbody>
-            {survey1QuestionData}
+            
+        <ShowSurveys surveys={postList}/>
         </tbody>
         </table>
       </div>

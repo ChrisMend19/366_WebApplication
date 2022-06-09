@@ -13,6 +13,7 @@ import SurveyAnalytics from './Pages/SurveyAnalytics';
 import CreateProfileChar from './Pages/CreateProfileChar';
 import ShowSurveys from './Pages/ShowSurveys';
 import SurveyResponses from './Pages/SurveyResponses';
+import PopUp from './Pages/PopUp';
 // CSS
 import './Styles/App.css'
 import Recommendations from './Pages/Recommendations';
@@ -35,6 +36,7 @@ function App() {
           <Route path="/ShowSurveys/:survey" element={<ShowSurveys />} />
           <Route path="/:survey/SurveyResponses/:response" element={<SurveyResponses />} />
           <Route path="/:survey/Recommendation/:response" element={<Recommendations />} />
+          <Route path="/CreateSurvey/Question" element={<PopUp />} />
         </Routes>
       </Router>
     </div>
