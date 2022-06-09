@@ -262,7 +262,7 @@ function SurveyAnalytics() {
                 <table className="table">
                     <th>Survey Type</th>
                     <th>Total Number of Survey Responses</th>
-                    <th>Number of Unique User Responses</th>
+                    <th>Number of Unique User Took the Survey</th>
                     <th>Total Number of Responses Taken by Unique Users</th>
                     <td>Number of Anonymous User Responses</td>
                     
