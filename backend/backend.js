@@ -74,7 +74,7 @@ app.get("/ShowSurveys/:survey", async (req, res) => {
     else if(stat == "anonymous"){
         con.query(`select count(*) as anonymous from SurveyResponse s, User u
                    where s.SurveyId = ${id} and s.User = u.UserID
-                   and u.name = "anonymous;"`, (err, result)=>{
+                   and u.name = "anonymous"`, (err, result)=>{
                        if(err) throw err
                        res.send(result);
                    })
